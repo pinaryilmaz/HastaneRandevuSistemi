@@ -1,0 +1,6 @@
+import { CloudOff, Radio, RefreshCw, Wifi } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { formatTime } from '@/lib/formatDate';
+import { useFilterStore, type ConnectionMode } from '@/store/filterStore';
+const config: Record<ConnectionMode, { label: string; className: string; icon: typeof Radio }> = { live: { label: 'Canlı', className: 'bg-emerald-50 text-emerald-700 ring-emerald-200', icon: Radio }, polling: { label: '5 sn polling', className: 'bg-sky-50 text-sky-700 ring-sky-200', icon: RefreshCw }, connecting: { label: 'Bağlanıyor', className: 'bg-amber-50 text-amber-700 ring-amber-200', icon: Wifi }, offline: { label: 'Çevrimdışı', className: 'bg-rose-50 text-rose-700 ring-rose-200', icon: CloudOff } };
+export function ConnectionBadge() { const mode = useFilterStore((state) => state.connectionMode); const updated = useFilterStore((state) => state.lastUpdatedAt); const item = config[mode]; const Icon = item.icon; return <div className="flex items-center gap-2"><Badge className={item.className}><Icon size={12} className={mode === 'polling' || mode === 'connecting' ? 'animate-spin' : ''} />{item.label}</Badge>{updated && <span className="hidden text-xs text-slate-400 xl:inline">Son veri {formatTime(updated)}</span>}</div>; }

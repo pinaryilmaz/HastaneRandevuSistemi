@@ -1,0 +1,2 @@
+const serviceLabels: Record<string, string> = { cardiology: 'Kardiyoloji', neurology: 'Nöroloji', dermatology: 'Dermatoloji', orthopedics: 'Ortopedi', pediatrics: 'Çocuk Sağlığı', 'internal-medicine': 'İç Hastalıkları' };
+export function formatServiceType(value: string): string { return serviceLabels[value] ?? value.split('-').map((part) => part.charAt(0).toLocaleUpperCase('tr-TR') + part.slice(1)).join(' '); }

@@ -1,0 +1,12 @@
+import type { Call } from '@/api/contracts';
+export const mockCalls: Call[] = [
+  call('call-001', 'apt-001', '+905321234512', 'fac-001', 'ACTIVE', 3, '2026-08-24T12:28:48Z'),
+  call('call-002', 'apt-002', '+905441112288', 'fac-001', 'DIALING', 0, '2026-08-24T12:29:56Z'),
+  call('call-003', 'apt-003', '+905331245645', 'fac-002', 'MATCHED', 2, '2026-08-24T12:27:30Z', '2026-08-24T12:30:00Z', 'CONFIRMED'),
+  call('call-004', 'apt-004', '+905554418901', 'fac-003', 'ACTIVE', 2, '2026-08-24T12:29:12Z'),
+  call('call-005', 'apt-005', '+905307778811', 'fac-002', 'QUEUED', 0, null),
+  call('call-006', 'apt-006', '+905426547722', 'fac-001', 'FAILED', 0, '2026-08-24T12:22:00Z', '2026-08-24T12:22:18Z', 'DECLINED'),
+  call('call-007', 'apt-007', '+905389914433', 'fac-003', 'ACTIVE', 2, '2026-08-24T12:29:31Z'),
+  call('call-008', 'apt-008', '+905455526644', 'fac-002', 'NO_ANSWER', 0, '2026-08-24T12:18:00Z', '2026-08-24T12:18:45Z'),
+];
+function call(id: string, appointmentId: string, customerPhone: string, storeId: string, status: Call['status'], participantCount: number, startedAt: string | null, endedAt: string | null = null, result: Call['result'] = null): Call { return { id, appointmentId, roomName: `room-${id.slice(-3)}`, customerPhone, storeId, status, result, participantCount, transcriptUrl: status === 'MATCHED' ? 'https://example.com/transcripts/demo' : null, startedAt, endedAt }; }
