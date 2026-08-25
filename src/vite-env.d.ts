@@ -5,6 +5,7 @@ interface ImportMetaEnv {
   readonly VITE_API_PROXY_TARGET?: string;
   readonly VITE_WS_ENDPOINT?: string;
   readonly VITE_USE_MOCKS?: string;
+  readonly VITE_USE_MOCK_AUTH?: string;
 }
 
 interface ImportMeta {

@@ -1,0 +1,6 @@
+services:
+  frontend:
+    build:
+      args:
+        VITE_USE_MOCKS: "false"
+        VITE_USE_MOCK_AUTH: "true"

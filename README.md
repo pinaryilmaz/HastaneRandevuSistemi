@@ -30,6 +30,18 @@ docker compose up --build -d
 Uygulama `http://localhost:5173` adresinde demo verileriyle açılır. Container
 Docker Desktop içinde `hastane-randevu-frontend` adıyla görüntülenir.
 
+Çalışan API Gateway'e bağlanmak ve yalnızca backend'de henüz bulunmayan login
+endpoint'ini taklit etmek için:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.real.yml up --build -d
+```
+
+Bu modda Gateway'in host makinede `http://localhost:8080` adresinde çalışması
+gerekir. Şube, çağrı, randevu, sistem durumu ve log verileri gerçek backend'den
+gelir. Login, backend ekibi `/api/v1/auth/login` endpoint'ini sağlayana kadar MSW
+üzerinden çalışır.
+
 Logları izlemek için:
 
 ```bash
@@ -53,11 +65,14 @@ VITE_API_BASE_URL=/api/v1
 VITE_API_PROXY_TARGET=http://localhost:8080
 VITE_WS_ENDPOINT=/api/v1/stream
 VITE_USE_MOCKS=false
+VITE_USE_MOCK_AUTH=true
 ```
 
 REST istekleri Vite proxy üzerinden API Gateway'e gider. Canlı olaylar SockJS + STOMP ile `/topic/events` kanalından alınır. JWT/WebSocket el sıkışması başarısız olursa panel otomatik olarak 5 saniyelik REST polling moduna geçer.
 
-Backend'de henüz `/api/v1/auth/login` bulunmadığından gerçek ortam login entegrasyonu için planlanan LoginRequest/LoginResponse sözleşmesi backend tarafından sağlanmalıdır.
+Backend'de henüz `/api/v1/auth/login` bulunmadığından geliştirme ortamında
+`VITE_USE_MOCK_AUTH=true` kullanılabilir. Üretimde bu değer `false` olmalı ve
+planlanan LoginRequest/LoginResponse sözleşmesi backend tarafından sağlanmalıdır.
 
 ## Komutlar
 

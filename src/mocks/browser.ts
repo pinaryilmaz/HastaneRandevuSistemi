@@ -1,3 +1,5 @@
 import { setupWorker } from 'msw/browser';
-import { handlers } from './handlers';
-export const worker = setupWorker(...handlers);
+import { env } from '@/lib/env';
+import { authHandlers, handlers } from './handlers';
+
+export const worker = setupWorker(...(env.useMocks ? handlers : authHandlers));

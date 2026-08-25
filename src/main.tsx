@@ -8,7 +8,7 @@ import '@/styles/globals.css';
 const MOCK_START_TIMEOUT_MS = 2_500;
 
 async function enableMocks() {
-  if (!env.useMocks) return;
+  if (!env.useMocks && !env.useMockAuth) return;
 
   const { worker } = await import('@/mocks/browser');
   await Promise.race([
