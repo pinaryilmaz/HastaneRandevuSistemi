@@ -1,0 +1,14 @@
+services:
+  frontend:
+    container_name: hastane-randevu-frontend
+    build:
+      context: .
+      args:
+        VITE_API_BASE_URL: /api/v1
+        VITE_WS_ENDPOINT: /api/v1/stream
+        VITE_USE_MOCKS: "true"
+    ports:
+      - "5173:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped

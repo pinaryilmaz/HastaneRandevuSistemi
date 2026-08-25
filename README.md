@@ -19,6 +19,33 @@ Demo hesabı:
 - E-posta: `operator@hastane.local`
 - Şifre: `Demo123!`
 
+## Docker ile çalıştırma
+
+Docker Desktop açık ve Engine running durumundayken proje kökünde:
+
+```bash
+docker compose up --build -d
+```
+
+Uygulama `http://localhost:5173` adresinde demo verileriyle açılır. Container
+Docker Desktop içinde `hastane-randevu-frontend` adıyla görüntülenir.
+
+Logları izlemek için:
+
+```bash
+docker compose logs -f frontend
+```
+
+Container'ı durdurup kaldırmak için:
+
+```bash
+docker compose down
+```
+
+Docker imajı Node.js aşamasında production build alır ve oluşan statik dosyaları
+Nginx üzerinden sunar. `/api` trafiği ileride gerçek backend bağlantısı için
+host makinedeki `http://localhost:8080` Gateway adresine yönlendirilir.
+
 ## Gerçek backend bağlantısı
 
 ```dotenv
