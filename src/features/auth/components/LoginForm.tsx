@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toApiError } from '@/api/apiError';
+import { env } from '@/lib/env';
 import { login } from '../api/authApi';
 import { loginSchema, type LoginFormValues } from '../schemas/loginSchema';
 import { useAuthStore } from '../store/authStore';
@@ -17,7 +18,7 @@ export function LoginForm() {
   const location = useLocation();
   const setSession = useAuthStore((state) => state.setSession);
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema), defaultValues: { email: 'operator@hastane.local', password: 'Demo123!' } });
-  const mutation = useMutation({ mutationFn: login, onSuccess: (session) => { setSession(session); const state = location.state as { from?: string } | null; navigate(state?.from || '/dashboard', { replace: true }); } });
+  const mutation = useMutation({ mutationFn: login, onSuccess: (session) => { setSession(session); const state = location.state as { from?: string } | null; navigate(state?.from || env.defaultProtectedRoute, { replace: true }); } });
 
   return <form className="space-y-5" onSubmit={handleSubmit((values) => mutation.mutate(values))} noValidate>
     {mutation.isError && <Alert variant="error">{toApiError(mutation.error).message}</Alert>}

@@ -16,4 +16,5 @@ export const appointmentStatusConfig: Record<AppointmentStatus, { label: string;
   CANCELLED: { label: 'İptal', className: 'bg-rose-50 text-rose-700 ring-rose-200' },
   RESCHEDULED: { label: 'Yeniden planlandı', className: 'bg-sky-50 text-sky-700 ring-sky-200' },
   NO_SHOW: { label: 'Gelmedi', className: 'bg-slate-100 text-slate-700 ring-slate-200' },
+  COMPLETED: { label: 'Tamamlandı', className: 'bg-indigo-50 text-indigo-700 ring-indigo-200' },
 };

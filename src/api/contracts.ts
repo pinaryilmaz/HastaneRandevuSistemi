@@ -23,7 +23,13 @@ export interface Call {
   endedAt: string | null;
 }
 
-export type AppointmentStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'RESCHEDULED' | 'NO_SHOW';
+export type AppointmentStatus =
+  | 'PENDING'
+  | 'CONFIRMED'
+  | 'CANCELLED'
+  | 'RESCHEDULED'
+  | 'NO_SHOW'
+  | 'COMPLETED';
 export type Channel = 'WHATSAPP' | 'SMS' | 'VOICE';
 
 export interface Appointment {
@@ -52,6 +58,46 @@ export interface StoreResponse {
   phone: string;
   googleCalendarId: string | null;
   timezone: string;
+}
+
+export interface HospitalResponse {
+  id: string;
+  code: string;
+  name: string;
+  countryCode: string;
+  defaultLanguage: string;
+  active: boolean;
+}
+
+export interface HospitalBranchResponse {
+  id: string;
+  hospitalId: string;
+  hospitalName: string;
+  name: string;
+  location: string;
+  phone: string;
+  googleCalendarId: string | null;
+  timezone: string;
+}
+
+export interface MedicalAppointmentResponse {
+  id: string;
+  hospitalId: string;
+  hospitalName: string;
+  branchId: string;
+  branchName: string;
+  clinicId: string;
+  clinicName: string;
+  doctorId: string;
+  doctorName: string;
+  patientName: string;
+  patientPhone: string;
+  startTime: string;
+  endTime: string;
+  status: AppointmentStatus;
+  channel: Channel;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type LogLevel = 'INFO' | 'WARN' | 'ERROR';
