@@ -70,6 +70,7 @@ VITE_HOSPITAL_API_PROXY_TARGET=http://localhost:8087
 VITE_WS_ENDPOINT=/api/v1/stream
 VITE_USE_MOCKS=false
 VITE_USE_MOCK_AUTH=true
+VITE_OPERATIONS_API_ENABLED=false
 ```
 
 Çağrı ve operasyon REST istekleri Vite proxy üzerinden API Gateway'e, hastane
@@ -81,6 +82,11 @@ Yeni hastane servisi randevu listesini zorunlu `patientPhone` parametresiyle
 sunduğu için randevu ekranında önce hasta telefonu girilir. Telefon URL'ye
 yazılmaz ve sonuçlarda daima maskeli gösterilir. Backend'de henüz ID ile tekil
 randevu okuma endpoint'i bulunmadığından detay, liste sonucuyla birlikte açılır.
+
+`VITE_OPERATIONS_API_ENABLED=false` olduğunda çağrı, log, sistem sağlığı ve
+WebSocket istekleri durdurulur; eksik backend modülleri için kullanıcıya
+bilgilendirme ekranı gösterilir. API Gateway bu sözleşmeleri sağladığında değer
+`true` yapılarak modüller yeniden etkinleştirilir.
 
 Backend'de henüz `/api/v1/auth/login` bulunmadığından geliştirme ortamında
 `VITE_USE_MOCK_AUTH=true` kullanılabilir. Üretimde bu değer `false` olmalı ve

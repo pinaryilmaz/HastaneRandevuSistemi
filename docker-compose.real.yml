@@ -4,3 +4,4 @@ services:
       args:
         VITE_USE_MOCKS: "false"
         VITE_USE_MOCK_AUTH: "true"
+        VITE_OPERATIONS_API_ENABLED: "false"

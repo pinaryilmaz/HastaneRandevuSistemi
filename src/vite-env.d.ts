@@ -8,6 +8,7 @@ interface ImportMetaEnv {
   readonly VITE_WS_ENDPOINT?: string;
   readonly VITE_USE_MOCKS?: string;
   readonly VITE_USE_MOCK_AUTH?: string;
+  readonly VITE_OPERATIONS_API_ENABLED?: string;
 }
 
 interface ImportMeta {

@@ -9,6 +9,7 @@ services:
         VITE_WS_ENDPOINT: /api/v1/stream
         VITE_USE_MOCKS: "true"
         VITE_USE_MOCK_AUTH: "true"
+        VITE_OPERATIONS_API_ENABLED: "true"
     ports:
       - "5173:80"
     extra_hosts:
