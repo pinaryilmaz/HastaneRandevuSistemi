@@ -12,8 +12,7 @@ export const queryKeys = {
   medicalAppointments: {
     all: ['medical-appointments'] as const,
     list: (filters: object) => ['medical-appointments', 'list', filters] as const,
-    detail: (id: string, patientPhone?: string) =>
-      ['medical-appointments', 'detail', id, patientPhone ?? ''] as const,
+    detail: (id: string) => ['medical-appointments', 'detail', id] as const,
   },
   facilities: ['facilities'] as const,
   hospitalBranches: ['hospital-branches'] as const,

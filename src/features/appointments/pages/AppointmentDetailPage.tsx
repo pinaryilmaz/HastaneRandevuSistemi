@@ -12,10 +12,8 @@ import { EmptyState } from '@/components/common/EmptyState';
 import { ErrorState } from '@/components/common/ErrorState';
 import { LoadingState } from '@/components/common/LoadingState';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { env } from '@/lib/env';
 import { formatDate } from '@/lib/formatDate';
 import { maskPhone } from '@/lib/maskPhone';
-import { useFilterStore } from '@/store/filterStore';
 import { AppointmentStatusBadge } from '../components/AppointmentStatusBadge';
 import { useMedicalAppointment } from '../hooks/useMedicalAppointment';
 import { formatServiceType } from '../model/appointmentMapper';
@@ -24,9 +22,7 @@ export function AppointmentDetailPage() {
   const { appointmentId } = useParams();
   const location = useLocation();
   const routedAppointment = (location.state as { appointment?: Appointment } | null)?.appointment;
-  const storedPhone = useFilterStore((state) => state.appointmentPatientPhone);
-  const patientPhone = routedAppointment?.customerPhone || storedPhone || undefined;
-  const query = useMedicalAppointment(appointmentId, patientPhone, routedAppointment);
+  const query = useMedicalAppointment(appointmentId, routedAppointment);
 
   if (query.isLoading) return <LoadingState rows={5} />;
   if (query.isError) return <ErrorState error={query.error} onRetry={() => void query.refetch()} />;
@@ -42,11 +38,7 @@ export function AppointmentDetailPage() {
         <Card>
           <EmptyState
             title="Randevu bilgisi yeniden aranmalı"
-            description={
-              env.useMocks
-                ? 'Randevu kaydı bulunamadı.'
-                : 'Backend henüz randevuyu ID ile getirmiyor. Liste ekranında hasta telefonuyla arayıp randevuyu yeniden açın.'
-            }
+            description="Randevu kaydı bulunamadı veya artık erişilebilir değil."
           />
         </Card>
       </div>

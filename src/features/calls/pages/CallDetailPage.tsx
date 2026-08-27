@@ -6,7 +6,7 @@ import { IntegrationPendingState } from '@/components/common/IntegrationPendingS
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { AppointmentStatusBadge } from '@/features/appointments/components/AppointmentStatusBadge';
 import { formatServiceType } from '@/features/appointments/model/appointmentMapper';
-import { useAppointment } from '@/features/appointments/hooks/useAppointment';
+import { useMedicalAppointment } from '@/features/appointments/hooks/useMedicalAppointment';
 import { formatDate } from '@/lib/formatDate';
 import { maskPhone } from '@/lib/maskPhone';
 import { safeExternalUrl } from '@/lib/safeExternalUrl';
@@ -16,8 +16,8 @@ import { CallTimeline } from '../components/CallTimeline';
 import { useCallDetail } from '../hooks/useCallDetail';
 
 export function CallDetailPage() {
-  const { callId } = useParams(); const callQuery = useCallDetail(callId); const appointmentQuery = useAppointment(callQuery.data?.appointmentId); const call = callQuery.data; const appointment = appointmentQuery.data;
-  if (!env.operationsApiEnabled) return <div className="space-y-5"><Link to="/dashboard" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-aqua-700"><ArrowLeft size={16} /> Çağrı paneline dön</Link><IntegrationPendingState title="Çağrı detayı henüz kullanılamıyor" description="Çağrı servisi ve detay endpoint'i API Gateway'e eklendiğinde bu ekran gerçek görüşme verilerini gösterecek." items={['Görüşme durumu', 'Hasta ve randevu eşleşmesi', 'Zaman çizelgesi', 'Güvenli transcript bağlantısı']} /></div>;
+  const { callId } = useParams(); const callQuery = useCallDetail(callId); const appointmentQuery = useMedicalAppointment(callQuery.data?.appointmentId); const call = callQuery.data; const appointment = appointmentQuery.data;
+  if (!env.callsApiEnabled) return <div className="space-y-5"><Link to="/dashboard" className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-aqua-700"><ArrowLeft size={16} /> Çağrı paneline dön</Link><IntegrationPendingState title="Çağrı detayı henüz kullanılamıyor" description="Çağrı servisi ve detay endpoint'i API Gateway'e eklendiğinde bu ekran gerçek görüşme verilerini gösterecek." items={['Görüşme durumu', 'Hasta ve randevu eşleşmesi', 'Zaman çizelgesi', 'Güvenli transcript bağlantısı']} /></div>;
   if (callQuery.isLoading) return <LoadingState rows={5} />;
   if (callQuery.isError || !call) return <ErrorState error={callQuery.error} onRetry={() => void callQuery.refetch()} />;
   const transcript = safeExternalUrl(call.transcriptUrl);

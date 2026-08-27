@@ -32,7 +32,7 @@ export function IntegrationPendingState({
               ))}
             </ul>
             <p className="mt-5 text-xs text-slate-400">
-              Randevu modülü kullanılabilir; bu ekran gerekli API sağlandığında etkinleşecektir.
+              Hazır hastane modülleri kullanılabilir; bu ekran gerekli API sağlandığında etkinleşecektir.
             </p>
           </div>
         </div>

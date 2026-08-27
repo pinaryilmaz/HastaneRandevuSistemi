@@ -17,7 +17,7 @@ export function useRealtimeStream() {
   const touch = useFilterStore((state) => state.touchUpdatedAt);
 
   useEffect(() => {
-    if (!env.operationsApiEnabled) return;
+    if (!env.observabilityApiEnabled) return;
     if (env.useMocks) { setMode('polling'); return; }
     let attempts = 0;
     const client = new Client({

@@ -64,3 +64,12 @@ export function toAppointmentPage(
     empty: content.length === 0,
   };
 }
+
+export function mapMedicalAppointmentPage(
+  page: PageResponse<MedicalAppointmentResponse>,
+): PageResponse<Appointment> {
+  return {
+    ...page,
+    content: page.content.map(mapMedicalAppointment),
+  };
+}

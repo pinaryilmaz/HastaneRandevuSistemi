@@ -6,8 +6,8 @@ import { ErrorState } from '@/components/common/ErrorState';
 import { LoadingState } from '@/components/common/LoadingState';
 import { Pagination } from '@/components/common/Pagination';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { env } from '@/lib/env';
 import { useFilterStore } from '@/store/filterStore';
+import { isE164Phone } from '@/lib/isE164Phone';
 import { AppointmentFilters, type AppointmentFilterValues } from '../components/AppointmentFilters';
 import { AppointmentTable } from '../components/AppointmentTable';
 import { useMedicalAppointments } from '../hooks/useMedicalAppointments';
@@ -52,7 +52,8 @@ export function AppointmentsPage() {
     else search.delete('page');
     setParams(search);
   };
-  const requiresPhone = !env.useMocks && !patientPhone.trim();
+  const normalizedPhone = patientPhone.trim();
+  const invalidPhone = Boolean(normalizedPhone && !isE164Phone(normalizedPhone));
 
   return (
     <div className="space-y-6">
@@ -62,21 +63,21 @@ export function AppointmentsPage() {
         </div>
         <h1 className="text-3xl font-semibold tracking-tight text-navy-900">Randevular</h1>
         <p className="mt-2 text-sm text-slate-500">
-          Hasta telefonuyla randevuları bulun; şube, tarih ve duruma göre daraltın.
+          Tüm randevuları görüntüleyin; telefon, şube, tarih ve duruma göre daraltın.
         </p>
       </header>
       <Card>
         <CardHeader className="border-b border-slate-100">
           <AppointmentFilters value={filters} onChange={updateFilters} />
           <p className="mt-3 text-xs text-slate-400">
-            Hasta telefonu güvenlik amacıyla adres çubuğuna veya kalıcı filtrelere yazılmaz.
+            Telefon araması isteğe bağlıdır, E.164 biçiminde girilir ve adres çubuğuna yazılmaz.
           </p>
         </CardHeader>
         <CardContent className="p-0">
-          {requiresPhone ? (
+          {invalidPhone ? (
             <EmptyState
-              title="Hasta telefonu girin"
-              description="Yeni hastane servisi randevuları hasta telefonuna göre güvenli biçimde sorguluyor."
+              title="Telefon biçimini kontrol edin"
+              description="Numarayı ülke koduyla birlikte girin. Örnek: +38344123456"
             />
           ) : query.isLoading ? (
             <LoadingState />

@@ -8,6 +8,12 @@ export type CallStatus =
   | 'NO_ANSWER';
 
 export type CallResult = 'CONFIRMED' | 'DECLINED' | 'RESCHEDULE_REQUESTED';
+export type HospitalCallResult =
+  | 'APPOINTMENT_CONFIRMED'
+  | 'APPOINTMENT_CANCELLED'
+  | 'APPOINTMENT_RESCHEDULED'
+  | 'NO_ANSWER'
+  | 'FAILED';
 
 export interface Call {
   id: string;
@@ -21,6 +27,25 @@ export interface Call {
   transcriptUrl: string | null;
   startedAt: string | null;
   endedAt: string | null;
+}
+
+export interface HospitalCallResponse {
+  id: string;
+  appointmentId: string;
+  roomName: string;
+  patientPhone: string;
+  hospitalId: string;
+  hospitalName: string;
+  branchId: string;
+  branchName: string;
+  status: CallStatus;
+  result: HospitalCallResult | null;
+  participantCount: number;
+  transcriptUrl: string | null;
+  startedAt: string | null;
+  endedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type AppointmentStatus =

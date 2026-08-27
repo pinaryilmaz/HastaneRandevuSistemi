@@ -17,7 +17,7 @@ export function LoginForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const setSession = useAuthStore((state) => state.setSession);
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema), defaultValues: { email: 'operator@hastane.local', password: 'Demo123!' } });
+  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema), defaultValues: { email: 'operator@hastane.local', password: env.useMockAuth ? 'Demo123!' : 'password' } });
   const mutation = useMutation({ mutationFn: login, onSuccess: (session) => { setSession(session); const state = location.state as { from?: string } | null; navigate(state?.from || env.defaultProtectedRoute, { replace: true }); } });
 
   return <form className="space-y-5" onSubmit={handleSubmit((values) => mutation.mutate(values))} noValidate>
