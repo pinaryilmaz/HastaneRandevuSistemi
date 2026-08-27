@@ -154,7 +154,8 @@ export interface CallStatsPayload {
 }
 
 export interface RealtimeEnvelope<T = unknown> {
-  event: string;
+  event?: string;
+  eventType?: string;
   timestamp: string;
   correlationId: string;
   payload: T;

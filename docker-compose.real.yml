@@ -5,4 +5,4 @@ services:
         VITE_USE_MOCKS: "false"
         VITE_USE_MOCK_AUTH: "false"
         VITE_CALLS_API_ENABLED: "true"
-        VITE_OBSERVABILITY_API_ENABLED: "false"
+        VITE_OBSERVABILITY_API_ENABLED: "true"

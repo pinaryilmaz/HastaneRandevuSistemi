@@ -12,17 +12,18 @@ export function HospitalBranchFilter({
   const branches = useHospitalBranches();
 
   return (
-    <div className="relative">
-      <Building2
-        className="pointer-events-none absolute left-3 top-3.5 z-10 text-slate-400"
-        size={16}
+    <div className="flex items-center gap-2">
+      <span
+        className="flex size-11 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-400"
         aria-hidden="true"
-      />
+      >
+        <Building2 size={18} />
+      </span>
       <Select
         aria-label="Hastane şubesi seç"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full pl-9"
+        className="min-w-0 flex-1"
         disabled={branches.isLoading || branches.isError}
       >
         <option value="">

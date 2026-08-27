@@ -36,10 +36,9 @@ Gamze'nin gerçek hastane backend'ine bağlanmak için:
 docker compose -f docker-compose.yml -f docker-compose.real.yml up --build -d
 ```
 
-Bu modda hastane randevu servisi host makinede `http://localhost:8087` adresinde
-çalışmalıdır. Gerçek login, hastane/şube kataloğu, randevular ve çağrılar bu
-servisten gelir. Sistem durumu, merkezi log ve WebSocket sözleşmeleri henüz
-bulunmadığı için ilgili ekran bilgilendirme görünümünde kalır.
+Bu modda hastane randevu servisi host makinede `http://localhost:8080` adresinde
+çalışmalıdır. Gerçek login, hastane/şube kataloğu, randevular, çağrılar, sistem
+durumu, merkezi loglar ve WebSocket olayları bu servisten gelir.
 
 Yerel gerçek backend hesabı:
 
@@ -60,8 +59,8 @@ docker compose down
 
 Docker imajı Node.js aşamasında production build alır ve oluşan statik dosyaları
 Nginx üzerinden sunar. `/hospital-api` trafiği host makinedeki
-`http://localhost:8087` hastane servisine yönlendirilir. `/api` yolu demo ve
-ilerideki gözlemlenebilirlik Gateway sözleşmesi için korunur.
+`http://localhost:8080` hastane servisine yönlendirilir. `/api` yolu sistem
+durumu, log ve SockJS/STOMP trafiğini aynı servise yönlendirir.
 
 ## Gerçek backend bağlantısı
 
@@ -69,17 +68,17 @@ ilerideki gözlemlenebilirlik Gateway sözleşmesi için korunur.
 VITE_API_BASE_URL=/api/v1
 VITE_API_PROXY_TARGET=http://localhost:8080
 VITE_HOSPITAL_API_BASE_URL=/hospital-api/v1
-VITE_HOSPITAL_API_PROXY_TARGET=http://localhost:8087
+VITE_HOSPITAL_API_PROXY_TARGET=http://localhost:8080
 VITE_WS_ENDPOINT=/api/v1/stream
 VITE_USE_MOCKS=false
 VITE_USE_MOCK_AUTH=false
 VITE_CALLS_API_ENABLED=true
-VITE_OBSERVABILITY_API_ENABLED=false
+VITE_OBSERVABILITY_API_ENABLED=true
 ```
 
-Login, çağrı, hastane kataloğu ve tıbbi randevu istekleri yeni hastane servisine
-gider. Çağrılar WebSocket endpoint'i gelene kadar 5 saniyelik REST polling ile
-uzlaştırılır.
+Login, çağrı, hastane kataloğu, tıbbi randevu, log ve sistem durumu istekleri
+yeni hastane servisine gider. Çağrılar canlı olaylarla güncellenir; bağlantı
+kesildiğinde 5 saniyelik REST polling otomatik olarak devreye girer.
 
 Randevular Spring sayfalama, şube, durum ve tarih filtreleriyle listelenir.
 Telefon araması isteğe bağlıdır; kullanıldığında E.164 biçimi doğrulanır, güvenli
@@ -88,7 +87,6 @@ yazılmaz. Detay sayfası randevuyu ID ile yeniden yükleyebilir.
 
 `VITE_CALLS_API_ENABLED` çağrı panelini, `VITE_OBSERVABILITY_API_ENABLED` ise
 merkezi log, sistem sağlığı ve WebSocket isteklerini ayrı ayrı kontrol eder.
-Eksik gözlemlenebilirlik modülü için kullanıcıya bilgilendirme ekranı gösterilir.
 
 Gerçek modda `/api/v1/auth/login` kullanılır. Bağımsız frontend geliştirmesinde
 `VITE_USE_MOCK_AUTH=true` ile MSW login sözleşmesi kullanılabilir.
