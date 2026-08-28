@@ -30,6 +30,21 @@ docker compose up --build -d
 Uygulama `http://localhost:5173` adresinde demo verileriyle açılır. Container
 Docker Desktop içinde `hastane-randevu-frontend` adıyla görüntülenir.
 
+Gamze'nin gerçek hastane backend'ine bağlanmak için:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.real.yml up --build -d
+```
+
+Bu modda hastane randevu servisi host makinede `http://localhost:8087` adresinde
+çalışmalıdır. Gerçek login, hastane/şube kataloğu, randevular, çağrılar, sistem
+durumu, merkezi loglar ve WebSocket olayları bu servisten gelir.
+
+Yerel gerçek backend hesabı:
+
+- E-posta: `operator@hastane.local`
+- Şifre: `password`
+
 Logları izlemek için:
 
 ```bash
@@ -43,21 +58,38 @@ docker compose down
 ```
 
 Docker imajı Node.js aşamasında production build alır ve oluşan statik dosyaları
-Nginx üzerinden sunar. `/api` trafiği ileride gerçek backend bağlantısı için
-host makinedeki `http://localhost:8080` Gateway adresine yönlendirilir.
+Nginx üzerinden sunar. `/hospital-api` trafiği host makinedeki
+`http://localhost:8087` hastane servisine yönlendirilir. `/api` yolu sistem
+durumu, log ve SockJS/STOMP trafiğini aynı servise yönlendirir.
 
 ## Gerçek backend bağlantısı
 
 ```dotenv
 VITE_API_BASE_URL=/api/v1
-VITE_API_PROXY_TARGET=http://localhost:8080
+VITE_API_PROXY_TARGET=http://localhost:8087
+VITE_HOSPITAL_API_BASE_URL=/hospital-api/v1
+VITE_HOSPITAL_API_PROXY_TARGET=http://localhost:8087
 VITE_WS_ENDPOINT=/api/v1/stream
 VITE_USE_MOCKS=false
+VITE_USE_MOCK_AUTH=false
+VITE_CALLS_API_ENABLED=true
+VITE_OBSERVABILITY_API_ENABLED=true
 ```
 
-REST istekleri Vite proxy üzerinden API Gateway'e gider. Canlı olaylar SockJS + STOMP ile `/topic/events` kanalından alınır. JWT/WebSocket el sıkışması başarısız olursa panel otomatik olarak 5 saniyelik REST polling moduna geçer.
+Login, çağrı, hastane kataloğu, tıbbi randevu, log ve sistem durumu istekleri
+yeni hastane servisine gider. Çağrılar canlı olaylarla güncellenir; bağlantı
+kesildiğinde 5 saniyelik REST polling otomatik olarak devreye girer.
 
-Backend'de henüz `/api/v1/auth/login` bulunmadığından gerçek ortam login entegrasyonu için planlanan LoginRequest/LoginResponse sözleşmesi backend tarafından sağlanmalıdır.
+Randevular Spring sayfalama, şube, durum ve tarih filtreleriyle listelenir.
+Telefon araması isteğe bağlıdır; kullanıldığında E.164 biçimi doğrulanır, güvenli
+`POST /medical-appointments/search` endpoint'ine gönderilir ve adres çubuğuna
+yazılmaz. Detay sayfası randevuyu ID ile yeniden yükleyebilir.
+
+`VITE_CALLS_API_ENABLED` çağrı panelini, `VITE_OBSERVABILITY_API_ENABLED` ise
+merkezi log, sistem sağlığı ve WebSocket isteklerini ayrı ayrı kontrol eder.
+
+Gerçek modda `/api/v1/auth/login` kullanılır. Bağımsız frontend geliştirmesinde
+`VITE_USE_MOCK_AUTH=true` ile MSW login sözleşmesi kullanılabilir.
 
 ## Komutlar
 

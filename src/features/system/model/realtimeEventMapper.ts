@@ -1,5 +1,63 @@
 import type { LogEvent, LogLevel, RealtimeEnvelope } from '@/api/contracts';
-function inferService(event: string): string { if (event.startsWith('call.')) return 'call-service'; if (event.startsWith('appointment.')) return 'appointment-service'; if (event.startsWith('message.') || event.startsWith('whatsapp.')) return 'whatsapp-service'; if (event.startsWith('stats.')) return 'notification-service'; return 'system'; }
-function inferLevel(event: string): LogLevel { return event.includes('failed') || event.includes('error') ? 'ERROR' : event.includes('cancelled') || event.includes('ended') ? 'WARN' : 'INFO'; }
-const labels: Record<string, string> = { 'call.started': 'Yeni çağrı başlatıldı', 'call.updated': 'Çağrı durumu güncellendi', 'call.ended': 'Çağrı sona erdi', 'appointment.created': 'Yeni randevu oluşturuldu', 'appointment.updated': 'Randevu güncellendi', 'appointment.cancelled': 'Randevu iptal edildi', 'message.received': 'Yeni WhatsApp mesajı alındı', 'stats.updated': 'Canlı çağrı istatistikleri güncellendi' };
-export function realtimeToLog(envelope: RealtimeEnvelope): LogEvent { return { id: `rt-${envelope.correlationId}-${envelope.timestamp}`, timestamp: envelope.timestamp, level: inferLevel(envelope.event), service: inferService(envelope.event), message: labels[envelope.event] ?? envelope.event, correlationId: envelope.correlationId, meta: typeof envelope.payload === 'object' && envelope.payload ? envelope.payload as Record<string, unknown> : null, source: 'REALTIME' }; }
+
+const eventAliases: Record<string, string> = {
+  CALL_CREATED: 'call.started',
+  CALL_UPDATED: 'call.updated',
+  CALL_COMPLETED: 'call.ended',
+  APPOINTMENT_CREATED: 'appointment.created',
+  APPOINTMENT_UPDATED: 'appointment.updated',
+  APPOINTMENT_STATUS_UPDATED: 'appointment.updated',
+  APPOINTMENT_CANCELLED: 'appointment.cancelled',
+  MESSAGE_RECEIVED: 'message.received',
+  CRM_OFFER_GENERATED: 'crm.offer.generated',
+  STATS_UPDATED: 'stats.updated',
+};
+
+const labels: Record<string, string> = {
+  'call.started': 'Yeni çağrı başlatıldı',
+  'call.updated': 'Çağrı durumu güncellendi',
+  'call.ended': 'Çağrı sona erdi',
+  'appointment.created': 'Yeni randevu oluşturuldu',
+  'appointment.updated': 'Randevu güncellendi',
+  'appointment.cancelled': 'Randevu iptal edildi',
+  'message.received': 'Yeni WhatsApp mesajı alındı',
+  'crm.offer.generated': 'CRM önerisi oluşturuldu',
+  'stats.updated': 'Canlı çağrı istatistikleri güncellendi',
+};
+
+export function normalizeRealtimeEventName(envelope: RealtimeEnvelope): string {
+  const rawEvent = envelope.event ?? envelope.eventType ?? 'unknown';
+  return eventAliases[rawEvent] ?? rawEvent.toLocaleLowerCase('en-US').replaceAll('_', '.');
+}
+
+function inferService(event: string): string {
+  if (event.startsWith('call.')) return 'call-service';
+  if (event.startsWith('appointment.')) return 'appointment-service';
+  if (event.startsWith('message.') || event.startsWith('whatsapp.')) return 'whatsapp-service';
+  if (event.startsWith('stats.')) return 'notification-service';
+  if (event.startsWith('crm.')) return 'crm-service';
+  return 'system';
+}
+
+function inferLevel(event: string): LogLevel {
+  if (event.includes('failed') || event.includes('error')) return 'ERROR';
+  if (event.includes('cancelled') || event.includes('ended')) return 'WARN';
+  return 'INFO';
+}
+
+export function realtimeToLog(envelope: RealtimeEnvelope): LogEvent {
+  const event = normalizeRealtimeEventName(envelope);
+  return {
+    id: `rt-${envelope.correlationId}-${envelope.timestamp}`,
+    timestamp: envelope.timestamp,
+    level: inferLevel(event),
+    service: inferService(event),
+    message: labels[event] ?? event,
+    correlationId: envelope.correlationId,
+    meta:
+      typeof envelope.payload === 'object' && envelope.payload
+        ? (envelope.payload as Record<string, unknown>)
+        : null,
+    source: 'REALTIME',
+  };
+}

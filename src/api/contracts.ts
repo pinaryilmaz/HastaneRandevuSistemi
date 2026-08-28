@@ -8,6 +8,12 @@ export type CallStatus =
   | 'NO_ANSWER';
 
 export type CallResult = 'CONFIRMED' | 'DECLINED' | 'RESCHEDULE_REQUESTED';
+export type HospitalCallResult =
+  | 'APPOINTMENT_CONFIRMED'
+  | 'APPOINTMENT_CANCELLED'
+  | 'APPOINTMENT_RESCHEDULED'
+  | 'NO_ANSWER'
+  | 'FAILED';
 
 export interface Call {
   id: string;
@@ -23,7 +29,32 @@ export interface Call {
   endedAt: string | null;
 }
 
-export type AppointmentStatus = 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'RESCHEDULED' | 'NO_SHOW';
+export interface HospitalCallResponse {
+  id: string;
+  appointmentId: string;
+  roomName: string;
+  patientPhone: string;
+  hospitalId: string;
+  hospitalName: string;
+  branchId: string;
+  branchName: string;
+  status: CallStatus;
+  result: HospitalCallResult | null;
+  participantCount: number;
+  transcriptUrl: string | null;
+  startedAt: string | null;
+  endedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type AppointmentStatus =
+  | 'PENDING'
+  | 'CONFIRMED'
+  | 'CANCELLED'
+  | 'RESCHEDULED'
+  | 'NO_SHOW'
+  | 'COMPLETED';
 export type Channel = 'WHATSAPP' | 'SMS' | 'VOICE';
 
 export interface Appointment {
@@ -52,6 +83,46 @@ export interface StoreResponse {
   phone: string;
   googleCalendarId: string | null;
   timezone: string;
+}
+
+export interface HospitalResponse {
+  id: string;
+  code: string;
+  name: string;
+  countryCode: string;
+  defaultLanguage: string;
+  active: boolean;
+}
+
+export interface HospitalBranchResponse {
+  id: string;
+  hospitalId: string;
+  hospitalName: string;
+  name: string;
+  location: string;
+  phone: string;
+  googleCalendarId: string | null;
+  timezone: string;
+}
+
+export interface MedicalAppointmentResponse {
+  id: string;
+  hospitalId: string;
+  hospitalName: string;
+  branchId: string;
+  branchName: string;
+  clinicId: string;
+  clinicName: string;
+  doctorId: string;
+  doctorName: string;
+  patientName: string;
+  patientPhone: string;
+  startTime: string;
+  endTime: string;
+  status: AppointmentStatus;
+  channel: Channel;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export type LogLevel = 'INFO' | 'WARN' | 'ERROR';
@@ -83,7 +154,8 @@ export interface CallStatsPayload {
 }
 
 export interface RealtimeEnvelope<T = unknown> {
-  event: string;
+  event?: string;
+  eventType?: string;
   timestamp: string;
   correlationId: string;
   payload: T;
