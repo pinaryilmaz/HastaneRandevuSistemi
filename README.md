@@ -36,7 +36,7 @@ Gamze'nin gerçek hastane backend'ine bağlanmak için:
 docker compose -f docker-compose.yml -f docker-compose.real.yml up --build -d
 ```
 
-Bu modda hastane randevu servisi host makinede `http://localhost:8080` adresinde
+Bu modda hastane randevu servisi host makinede `http://localhost:8087` adresinde
 çalışmalıdır. Gerçek login, hastane/şube kataloğu, randevular, çağrılar, sistem
 durumu, merkezi loglar ve WebSocket olayları bu servisten gelir.
 
@@ -59,16 +59,16 @@ docker compose down
 
 Docker imajı Node.js aşamasında production build alır ve oluşan statik dosyaları
 Nginx üzerinden sunar. `/hospital-api` trafiği host makinedeki
-`http://localhost:8080` hastane servisine yönlendirilir. `/api` yolu sistem
+`http://localhost:8087` hastane servisine yönlendirilir. `/api` yolu sistem
 durumu, log ve SockJS/STOMP trafiğini aynı servise yönlendirir.
 
 ## Gerçek backend bağlantısı
 
 ```dotenv
 VITE_API_BASE_URL=/api/v1
-VITE_API_PROXY_TARGET=http://localhost:8080
+VITE_API_PROXY_TARGET=http://localhost:8087
 VITE_HOSPITAL_API_BASE_URL=/hospital-api/v1
-VITE_HOSPITAL_API_PROXY_TARGET=http://localhost:8080
+VITE_HOSPITAL_API_PROXY_TARGET=http://localhost:8087
 VITE_WS_ENDPOINT=/api/v1/stream
 VITE_USE_MOCKS=false
 VITE_USE_MOCK_AUTH=false
