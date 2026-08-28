@@ -91,6 +91,10 @@ merkezi log, sistem sağlığı ve WebSocket isteklerini ayrı ayrı kontrol ede
 Gerçek modda `/api/v1/auth/login` kullanılır. Bağımsız frontend geliştirmesinde
 `VITE_USE_MOCK_AUTH=true` ile MSW login sözleşmesi kullanılabilir.
 
+Docker Compose varsayılan olarak gerçek backend modunda derlenir. Backend
+olmadan yalnızca arayüz geliştirmek için `VITE_USE_MOCKS=true` ve
+`VITE_USE_MOCK_AUTH=true` değerleriyle ayrı bir geliştirme build'i alınabilir.
+
 ## Komutlar
 
 ```bash
@@ -98,9 +102,13 @@ npm run dev
 npm run typecheck
 npm run lint
 npm run test
+npm run test:e2e:real
 npm run build
 npm run preview
 ```
+
+`test:e2e:real`, Docker ile çalışan frontend ve gerçek backend üzerinde Chrome kullanarak giriş,
+çağrı detayı, randevu detayı ve sistem ekranını uçtan uca doğrular.
 
 ## Ekranlar
 
