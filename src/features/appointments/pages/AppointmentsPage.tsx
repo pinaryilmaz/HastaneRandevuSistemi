@@ -61,7 +61,9 @@ export function AppointmentsPage() {
         <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-700">
           <CalendarDays size={13} /> Randevu takibi
         </div>
-        <h1 className="text-3xl font-semibold tracking-tight text-navy-900">Randevular</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-navy-900 sm:text-3xl">
+          Randevular
+        </h1>
         <p className="mt-2 text-sm text-slate-500">
           Tüm randevuları görüntüleyin; telefon, şube, tarih ve duruma göre daraltın.
         </p>

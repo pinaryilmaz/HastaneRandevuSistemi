@@ -28,15 +28,22 @@ export function AppointmentFilters({
   return (
     <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
       <div>
-        <span className="mb-1.5 block text-sm font-medium text-slate-700">Hasta telefonu</span>
+        <Label htmlFor="appointment-phone">Hasta telefonu</Label>
         <DebouncedSearchInput
+          id="appointment-phone"
+          ariaLabel="Hasta telefonuyla ara"
           value={value.patientPhone}
           onChange={(phone) => update('patientPhone', phone)}
           placeholder="Hasta telefonu ile ara"
         />
       </div>
       <div>
-        <span className="mb-1.5 block text-sm font-medium text-slate-700">Hastane / şube</span>
+        <span
+          className="mb-1.5 block text-sm font-medium text-slate-700"
+          id="appointment-branch-label"
+        >
+          Hastane / şube
+        </span>
         <HospitalBranchFilter value={value.storeId} onChange={(id) => update('storeId', id)} />
       </div>
       <div>

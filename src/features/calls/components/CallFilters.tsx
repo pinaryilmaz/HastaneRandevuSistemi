@@ -38,6 +38,7 @@ export function CallFilters({
       <div className="grid w-full gap-3 sm:grid-cols-[minmax(220px,1fr)_180px_auto] xl:w-auto">
         <div className="sm:min-w-64">
           <DebouncedSearchInput
+            ariaLabel="Oda veya telefon ara"
             value={query}
             onChange={onQueryChange}
             placeholder="Oda veya telefon ara..."
