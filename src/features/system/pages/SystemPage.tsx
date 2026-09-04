@@ -12,6 +12,9 @@ import { LogStream } from '../components/LogStream';
 import { SystemStatusPanel } from '../components/SystemStatusPanel';
 import { useLogs } from '../hooks/useLogs';
 import { useSystemStatus } from '../hooks/useSystemStatus';
+import { collectLogServices, mergeAndFilterLogs } from '../model/logUtils';
+
+const emptyLogs: never[] = [];
 
 export function SystemPage() {
   const status = useSystemStatus();
@@ -29,18 +32,12 @@ export function SystemPage() {
     size: 50,
   });
   const realtime = useFilterStore((state) => state.realtimeLogs);
-  const merged = useMemo(() => {
-    const live = realtime.filter(
-      (item) =>
-        (!filters.service || item.service === filters.service) &&
-        (!filters.level || item.level === filters.level) &&
-        (!filters.correlationId || item.correlationId.includes(filters.correlationId)),
-    );
-    const all = [...live, ...(logs.data?.content ?? [])];
-    return Array.from(new Map(all.map((item) => [item.id, item])).values()).sort(
-      (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-    );
-  }, [filters, logs.data, realtime]);
+  const restLogs = logs.data?.content ?? emptyLogs;
+  const merged = useMemo(
+    () => mergeAndFilterLogs(realtime, restLogs, filters),
+    [filters, realtime, restLogs],
+  );
+  const services = useMemo(() => collectLogServices(realtime, restLogs), [realtime, restLogs]);
   const updateFilters = (next: LogFilterValues) => {
     setFilters(next);
     setPage(0);
@@ -99,7 +96,7 @@ export function SystemPage() {
               REST kayıtları ve anlık olaylar tek kronolojide birleştirilir.
             </p>
           </div>
-          <LogFilters value={filters} onChange={updateFilters} />
+          <LogFilters value={filters} services={services} onChange={updateFilters} />
         </CardHeader>
         <CardContent className="p-0">
           {logs.isLoading ? (

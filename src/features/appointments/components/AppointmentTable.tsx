@@ -46,13 +46,13 @@ export function AppointmentTable({ appointments }: { appointments: Appointment[]
                 <tr key={appointment.id} className="hover:bg-slate-50">
                   <Td>
                     <p className="font-medium text-slate-900">{appointment.customerName}</p>
-                    <p className="mt-0.5 font-mono text-xs text-slate-400">
+                    <p className="mt-0.5 font-mono text-xs text-slate-500">
                       {maskPhone(appointment.customerPhone)}
                     </p>
                   </Td>
                   <Td>
                     <p>{formatServiceType(appointment.serviceType)}</p>
-                    <p className="mt-0.5 text-xs text-slate-400">{appointment.storeName}</p>
+                    <p className="mt-0.5 text-xs text-slate-500">{appointment.storeName}</p>
                   </Td>
                   <Td>{appointment.employeeName ?? 'Atanmadı'}</Td>
                   <Td className="whitespace-nowrap">{formatDate(appointment.startTime)}</Td>
@@ -91,7 +91,7 @@ export function AppointmentTable({ appointments }: { appointments: Appointment[]
                 <p className="mt-1 text-xs text-slate-500">
                   {formatServiceType(appointment.serviceType)}
                 </p>
-                <p className="mt-1 font-mono text-xs text-slate-400">
+                <p className="mt-1 font-mono text-xs text-slate-500">
                   {maskPhone(appointment.customerPhone)}
                 </p>
               </div>
@@ -99,25 +99,25 @@ export function AppointmentTable({ appointments }: { appointments: Appointment[]
             </div>
             <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 text-xs">
               <div>
-                <dt className="text-slate-400">Doktor</dt>
+                <dt className="text-slate-500">Doktor</dt>
                 <dd className="mt-0.5 font-medium text-slate-600">
                   {appointment.employeeName ?? 'Atanmamış'}
                 </dd>
               </div>
               <div className="text-right">
-                <dt className="text-slate-400">Tarih</dt>
+                <dt className="text-slate-500">Tarih</dt>
                 <dd className="mt-0.5 font-medium text-slate-600">
                   {formatDate(appointment.startTime)}
                 </dd>
               </div>
               <div className="min-w-0">
-                <dt className="text-slate-400">Şube</dt>
+                <dt className="text-slate-500">Şube</dt>
                 <dd className="mt-0.5 break-words font-medium text-slate-600">
                   {appointment.storeName}
                 </dd>
               </div>
               <div className="text-right">
-                <dt className="text-slate-400">Kanal</dt>
+                <dt className="text-slate-500">Kanal</dt>
                 <dd className="mt-0.5 font-medium text-slate-600">
                   {channelLabels[appointment.channel]}
                 </dd>

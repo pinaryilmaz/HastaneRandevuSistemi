@@ -1,8 +1,4 @@
-import type {
-  Appointment,
-  MedicalAppointmentResponse,
-  PageResponse,
-} from '@/api/contracts';
+import type { Appointment, MedicalAppointmentResponse, PageResponse } from '@/api/contracts';
 
 export interface MedicalAppointmentFilters {
   patientPhone?: string;

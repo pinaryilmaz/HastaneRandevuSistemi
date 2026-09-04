@@ -47,7 +47,7 @@ export function CallTable({ calls }: { calls: CallRowModel[] }) {
                   </Td>
                   <Td>
                     <p className="font-medium text-slate-900">{call.customerName}</p>
-                    <p className="mt-0.5 text-xs text-slate-400">{call.serviceType}</p>
+                    <p className="mt-0.5 text-xs text-slate-500">{call.serviceType}</p>
                   </Td>
                   <Td className="font-mono text-xs">{maskPhone(call.customerPhone)}</Td>
                   <Td>{call.storeName}</Td>
@@ -97,11 +97,11 @@ export function CallTable({ calls }: { calls: CallRowModel[] }) {
             </div>
             <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
               <div className="min-w-0">
-                <dt className="text-slate-400">Şube</dt>
+                <dt className="text-slate-500">Şube</dt>
                 <dd className="mt-0.5 break-words font-medium text-slate-600">{call.storeName}</dd>
               </div>
               <div className="text-right">
-                <dt className="text-slate-400">Görüşme</dt>
+                <dt className="text-slate-500">Görüşme</dt>
                 <dd className="mt-0.5 font-medium text-slate-600">
                   {call.participantCount} katılımcı · {formatDuration(call.startedAt, call.endedAt)}
                 </dd>

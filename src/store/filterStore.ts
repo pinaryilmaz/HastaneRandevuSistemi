@@ -27,6 +27,7 @@ export const useFilterStore = create<FilterState>((set) => ({
   setAppointmentPatientPhone: (appointmentPatientPhone) => set({ appointmentPatientPhone }),
   setConnectionMode: (connectionMode) => set({ connectionMode }),
   touchUpdatedAt: (value) => set({ lastUpdatedAt: value ?? new Date().toISOString() }),
-  addRealtimeLog: (log) => set((state) => ({ realtimeLogs: [log, ...state.realtimeLogs].slice(0, 100) })),
+  addRealtimeLog: (log) =>
+    set((state) => ({ realtimeLogs: [log, ...state.realtimeLogs].slice(0, 100) })),
   clearRealtimeLogs: () => set({ realtimeLogs: [] }),
 }));

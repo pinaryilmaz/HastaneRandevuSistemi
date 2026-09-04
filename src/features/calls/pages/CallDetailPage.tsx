@@ -96,7 +96,7 @@ export function CallDetailPage() {
                     helper={appointment.storeName}
                   />
                   <div>
-                    <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-400">
+                    <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
                       Randevu durumu
                     </p>
                     <AppointmentStatusBadge status={appointment.status} />
@@ -113,13 +113,13 @@ export function CallDetailPage() {
             </CardHeader>
             <CardContent className="grid gap-5 sm:grid-cols-2">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">Sonuç</p>
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Sonuç</p>
                 <p className="mt-2 font-semibold text-slate-800">
                   {call.result ? resultLabels[call.result] : 'Henüz sonuçlanmadı'}
                 </p>
               </div>
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
                   Transcript
                 </p>
                 {transcript ? (
@@ -175,7 +175,7 @@ function Detail({
         <Icon size={18} />
       </span>
       <div>
-        <p className="text-xs font-medium uppercase tracking-wide text-slate-400">{label}</p>
+        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
         <p className="mt-1 font-semibold text-slate-800">{value}</p>
         <p className="mt-1 text-xs text-slate-500">{helper}</p>
       </div>

@@ -3,6 +3,11 @@
   "style": "new-york",
   "rsc": false,
   "tsx": true,
-  "tailwind": { "config": "tailwind.config.ts", "css": "src/styles/globals.css", "baseColor": "slate", "cssVariables": false },
+  "tailwind": {
+    "config": "tailwind.config.ts",
+    "css": "src/styles/globals.css",
+    "baseColor": "slate",
+    "cssVariables": false
+  },
   "aliases": { "components": "@/components", "utils": "@/lib/cn", "ui": "@/components/ui" }
 }

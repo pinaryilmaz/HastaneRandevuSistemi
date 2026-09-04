@@ -37,7 +37,7 @@ export function Header({
         </span>
         <div className="hidden text-right sm:block">
           <p className="max-w-40 truncate text-sm font-semibold text-slate-800">{user?.name}</p>
-          <p className="text-xs text-slate-400">Operasyon kullanıcısı</p>
+          <p className="text-xs text-slate-500">Operasyon kullanıcısı</p>
         </div>
         <span
           className="hidden h-10 w-10 items-center justify-center rounded-xl bg-navy-900 text-white sm:flex"

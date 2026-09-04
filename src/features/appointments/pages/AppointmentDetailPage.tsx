@@ -133,7 +133,7 @@ function InfoRow({
         <Icon size={18} />
       </span>
       <div>
-        <p className="text-xs font-medium uppercase tracking-wide text-slate-400">{label}</p>
+        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
         <p className="mt-1 font-semibold text-slate-800">{value}</p>
         <p className="mt-1 text-xs text-slate-500">{helper}</p>
       </div>

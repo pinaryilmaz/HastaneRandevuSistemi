@@ -71,7 +71,7 @@ export function AppointmentsPage() {
       <Card>
         <CardHeader className="border-b border-slate-100">
           <AppointmentFilters value={filters} onChange={updateFilters} />
-          <p className="mt-3 text-xs text-slate-400">
+          <p className="mt-3 text-xs text-slate-500">
             Telefon araması isteğe bağlıdır, E.164 biçiminde girilir ve adres çubuğuna yazılmaz.
           </p>
         </CardHeader>

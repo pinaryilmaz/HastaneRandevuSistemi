@@ -10,7 +10,10 @@ export const callStatusConfig: Record<CallStatus, { label: string; className: st
   NO_ANSWER: { label: 'Yanıt yok', className: 'bg-orange-50 text-orange-700 ring-orange-200' },
 };
 
-export const appointmentStatusConfig: Record<AppointmentStatus, { label: string; className: string }> = {
+export const appointmentStatusConfig: Record<
+  AppointmentStatus,
+  { label: string; className: string }
+> = {
   PENDING: { label: 'Bekliyor', className: 'bg-amber-50 text-amber-700 ring-amber-200' },
   CONFIRMED: { label: 'Onaylandı', className: 'bg-emerald-50 text-emerald-700 ring-emerald-200' },
   CANCELLED: { label: 'İptal', className: 'bg-rose-50 text-rose-700 ring-rose-200' },

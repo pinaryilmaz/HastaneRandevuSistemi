@@ -3,10 +3,7 @@ import type { Appointment } from '@/api/contracts';
 import { queryKeys } from '@/api/queryKeys';
 import { getMedicalAppointment } from '../api/medicalAppointmentsApi';
 
-export function useMedicalAppointment(
-  id: string | undefined,
-  initialData?: Appointment,
-) {
+export function useMedicalAppointment(id: string | undefined, initialData?: Appointment) {
   return useQuery({
     queryKey: queryKeys.medicalAppointments.detail(id ?? ''),
     queryFn: () => getMedicalAppointment(id!),

@@ -7,7 +7,7 @@ describe('isE164Phone', () => {
     (phone) => expect(isE164Phone(phone)).toBe(true),
   );
 
-  it.each(['05551112233', '+12', '+90 555 111 22 33', '']) (
+  it.each(['05551112233', '+12', '+90 555 111 22 33', ''])(
     'geçersiz numarayı reddeder: %s',
     (phone) => expect(isE164Phone(phone)).toBe(false),
   );

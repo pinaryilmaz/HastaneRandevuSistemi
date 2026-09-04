@@ -12,7 +12,9 @@ cp .env.example .env
 npm run dev
 ```
 
-Uygulama varsayılan olarak `http://localhost:5173` adresinde çalışır. `.env.example` içinde `VITE_USE_MOCKS=true` olduğu sürece backend gerektirmeden hastane demo verileri kullanılır.
+Uygulama varsayılan olarak `http://localhost:5173` adresinde çalışır. Yerel `.env`
+dosyasında `VITE_USE_MOCKS=true` olduğu sürece backend gerektirmeden hastane demo
+verileri kullanılır.
 
 Demo hesabı:
 
@@ -27,18 +29,18 @@ Docker Desktop açık ve Engine running durumundayken proje kökünde:
 docker compose up --build -d
 ```
 
-Uygulama `http://localhost:5173` adresinde demo verileriyle açılır. Container
-Docker Desktop içinde `hastane-randevu-frontend` adıyla görüntülenir.
+Uygulama `http://localhost:5173` adresinde açılır. Container Docker Desktop içinde
+`hastane-randevu-frontend` adıyla görüntülenir. Docker Compose varsayılan olarak
+Gamze'nin gerçek hastane backend'ine bağlanır; hastane randevu servisi host
+makinede `http://localhost:8087` adresinde çalışmalıdır. Gerçek login,
+hastane/şube kataloğu, randevular, çağrılar, sistem durumu, merkezi loglar ve
+WebSocket olayları bu servisten gelir.
 
-Gamze'nin gerçek hastane backend'ine bağlanmak için:
+Backend olmadan yalnızca arayüzü demo verileriyle çalıştırmak için:
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.real.yml up --build -d
+VITE_USE_MOCKS=true VITE_USE_MOCK_AUTH=true docker compose up --build -d
 ```
-
-Bu modda hastane randevu servisi host makinede `http://localhost:8087` adresinde
-çalışmalıdır. Gerçek login, hastane/şube kataloğu, randevular, çağrılar, sistem
-durumu, merkezi loglar ve WebSocket olayları bu servisten gelir.
 
 Yerel gerçek backend hesabı:
 
@@ -91,9 +93,9 @@ merkezi log, sistem sağlığı ve WebSocket isteklerini ayrı ayrı kontrol ede
 Gerçek modda `/api/v1/auth/login` kullanılır. Bağımsız frontend geliştirmesinde
 `VITE_USE_MOCK_AUTH=true` ile MSW login sözleşmesi kullanılabilir.
 
-Docker Compose varsayılan olarak gerçek backend modunda derlenir. Backend
-olmadan yalnızca arayüz geliştirmek için `VITE_USE_MOCKS=true` ve
-`VITE_USE_MOCK_AUTH=true` değerleriyle ayrı bir geliştirme build'i alınabilir.
+OpenAI, LiveKit ve WhatsApp anahtarları yalnızca backend/AI servislerinde
+tutulmalıdır. Bu gizli değerler frontend ortamına, kaynak koduna veya GitHub'a
+eklenmemelidir.
 
 ## Komutlar
 
@@ -102,13 +104,19 @@ npm run dev
 npm run typecheck
 npm run lint
 npm run test
+npm run test:coverage
 npm run test:e2e:real
+npm run format:check
 npm run build
 npm run preview
 ```
 
 `test:e2e:real`, Docker ile çalışan frontend ve gerçek backend üzerinde Chrome kullanarak giriş,
 çağrı detayı, randevu detayı ve sistem ekranını uçtan uca doğrular.
+
+GitHub Actions her push ve pull request için biçim, TypeScript, lint, kapsam
+eşikli testler ve production build kontrollerini sırayla çalıştırır. Gerçek
+backend gerektiren E2E testi yerel entegrasyon ortamında çalıştırılır.
 
 ## Ekranlar
 

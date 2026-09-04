@@ -31,8 +31,9 @@ export function IntegrationPendingState({
                 </li>
               ))}
             </ul>
-            <p className="mt-5 text-xs text-slate-400">
-              Hazır hastane modülleri kullanılabilir; bu ekran gerekli API sağlandığında etkinleşecektir.
+            <p className="mt-5 text-xs text-slate-500">
+              Hazır hastane modülleri kullanılabilir; bu ekran gerekli API sağlandığında
+              etkinleşecektir.
             </p>
           </div>
         </div>

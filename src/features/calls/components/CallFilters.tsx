@@ -66,7 +66,7 @@ export function CallFilters({
           <span className="sm:sr-only">Yenile</span>
         </Button>
       </div>
-      <div className="flex min-h-5 flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
+      <div className="flex min-h-5 flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
         <span aria-live="polite">
           {lastUpdatedAt ? `Son güncelleme: ${formatTime(lastUpdatedAt)}` : 'Veriler yükleniyor...'}
         </span>
