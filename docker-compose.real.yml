@@ -2,7 +2,7 @@ services:
   frontend:
     build:
       args:
-        VITE_USE_MOCKS: "false"
-        VITE_USE_MOCK_AUTH: "false"
-        VITE_CALLS_API_ENABLED: "true"
-        VITE_OBSERVABILITY_API_ENABLED: "true"
+        VITE_USE_MOCKS: 'false'
+        VITE_USE_MOCK_AUTH: 'false'
+        VITE_CALLS_API_ENABLED: 'true'
+        VITE_OBSERVABILITY_API_ENABLED: 'true'

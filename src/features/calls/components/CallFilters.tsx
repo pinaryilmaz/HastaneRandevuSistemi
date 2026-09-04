@@ -38,6 +38,7 @@ export function CallFilters({
       <div className="grid w-full gap-3 sm:grid-cols-[minmax(220px,1fr)_180px_auto] xl:w-auto">
         <div className="sm:min-w-64">
           <DebouncedSearchInput
+            ariaLabel="Oda veya telefon ara"
             value={query}
             onChange={onQueryChange}
             placeholder="Oda veya telefon ara..."
@@ -65,7 +66,7 @@ export function CallFilters({
           <span className="sm:sr-only">Yenile</span>
         </Button>
       </div>
-      <div className="flex min-h-5 flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
+      <div className="flex min-h-5 flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
         <span aria-live="polite">
           {lastUpdatedAt ? `Son güncelleme: ${formatTime(lastUpdatedAt)}` : 'Veriler yükleniyor...'}
         </span>

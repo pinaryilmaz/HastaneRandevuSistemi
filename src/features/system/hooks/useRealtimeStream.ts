@@ -46,7 +46,7 @@ export function useRealtimeStream() {
             addLog(realtimeToLog(envelope));
             touch(envelope.timestamp);
 
-            if (event.startsWith('call.')) {
+            if (event.startsWith('call.') || event === 'stats.updated') {
               void queryClient.invalidateQueries({ queryKey: queryKeys.calls.all });
             }
 

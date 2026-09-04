@@ -59,7 +59,7 @@ export function AppointmentDetailPage() {
           <p className="text-xs font-semibold uppercase tracking-wider text-aqua-700">
             Randevu #{item.id.slice(0, 8)}
           </p>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight text-navy-900">
+          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-navy-900 sm:text-3xl">
             Randevu detayı
           </h1>
           <p className="mt-2 text-sm text-slate-500">Hasta ve planlama bilgileri · salt okunur</p>
@@ -68,9 +68,16 @@ export function AppointmentDetailPage() {
       </header>
       <div className="grid gap-5 lg:grid-cols-2">
         <Card>
-          <CardHeader><h2 className="font-semibold text-navy-900">Hasta bilgileri</h2></CardHeader>
+          <CardHeader>
+            <h2 className="font-semibold text-navy-900">Hasta bilgileri</h2>
+          </CardHeader>
           <CardContent className="space-y-5">
-            <InfoRow icon={UserRound} label="Hasta" value={item.customerName} helper={maskPhone(item.customerPhone)} />
+            <InfoRow
+              icon={UserRound}
+              label="Hasta"
+              value={item.customerName}
+              helper={maskPhone(item.customerPhone)}
+            />
             <InfoRow
               icon={MessageCircle}
               label="İletişim kanalı"
@@ -80,7 +87,9 @@ export function AppointmentDetailPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader><h2 className="font-semibold text-navy-900">Planlama</h2></CardHeader>
+          <CardHeader>
+            <h2 className="font-semibold text-navy-900">Planlama</h2>
+          </CardHeader>
           <CardContent className="space-y-5">
             <InfoRow
               icon={Stethoscope}
@@ -94,7 +103,12 @@ export function AppointmentDetailPage() {
               value={formatDate(item.startTime)}
               helper={`Bitiş: ${formatDate(item.endTime)}`}
             />
-            <InfoRow icon={Building2} label="Hastane / şube" value={item.storeName} helper="Yerel hastane saat dilimi" />
+            <InfoRow
+              icon={Building2}
+              label="Hastane / şube"
+              value={item.storeName}
+              helper="Yerel hastane saat dilimi"
+            />
           </CardContent>
         </Card>
       </div>
@@ -119,7 +133,7 @@ function InfoRow({
         <Icon size={18} />
       </span>
       <div>
-        <p className="text-xs font-medium uppercase tracking-wide text-slate-400">{label}</p>
+        <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
         <p className="mt-1 font-semibold text-slate-800">{value}</p>
         <p className="mt-1 text-xs text-slate-500">{helper}</p>
       </div>

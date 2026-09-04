@@ -6,7 +6,15 @@ import { handlers } from '@/mocks/handlers';
 
 export const server = setupServer(...handlers);
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
-afterEach(() => { cleanup(); server.resetHandlers(); sessionStorage.clear(); });
+afterEach(() => {
+  cleanup();
+  server.resetHandlers();
+  sessionStorage.clear();
+});
 afterAll(() => server.close());
 
 Object.defineProperty(window, 'scrollTo', { value: () => undefined, writable: true });
+Object.defineProperty(HTMLElement.prototype, 'scrollTo', {
+  value: () => undefined,
+  writable: true,
+});

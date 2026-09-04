@@ -53,7 +53,7 @@ export function DashboardPage() {
           <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-aqua-50 px-3 py-1 text-xs font-semibold text-aqua-700">
             <Activity size={13} /> Canlı operasyon
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight text-navy-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-navy-900 sm:text-3xl">
             Çağrı yönetim paneli
           </h1>
           <p className="mt-2 text-sm text-slate-500">
@@ -81,7 +81,7 @@ export function DashboardPage() {
           <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-aqua-50 px-3 py-1 text-xs font-semibold text-aqua-700">
             <Activity size={13} /> Canlı operasyon
           </div>
-          <h1 className="text-3xl font-semibold tracking-tight text-navy-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-navy-900 sm:text-3xl">
             Çağrı yönetim paneli
           </h1>
           <p className="mt-2 text-sm text-slate-500">
@@ -129,8 +129,8 @@ export function DashboardPage() {
       <div className="flex items-start gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs text-slate-500">
         <Info className="mt-0.5 shrink-0" size={14} />
         <p>
-          Hasta isimleri çağrının bağlı olduğu randevu kaydından alınır. Telefon numaraları
-          güvenlik gereği maskelenmiştir.
+          Hasta isimleri çağrının bağlı olduğu randevu kaydından alınır. Telefon numaraları güvenlik
+          gereği maskelenmiştir.
         </p>
       </div>
     </div>

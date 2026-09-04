@@ -1,11 +1,5 @@
 export type CallStatus =
-  | 'QUEUED'
-  | 'DIALING'
-  | 'ACTIVE'
-  | 'MATCHED'
-  | 'COMPLETED'
-  | 'FAILED'
-  | 'NO_ANSWER';
+  'QUEUED' | 'DIALING' | 'ACTIVE' | 'MATCHED' | 'COMPLETED' | 'FAILED' | 'NO_ANSWER';
 
 export type CallResult = 'CONFIRMED' | 'DECLINED' | 'RESCHEDULE_REQUESTED';
 export type HospitalCallResult =
@@ -49,12 +43,7 @@ export interface HospitalCallResponse {
 }
 
 export type AppointmentStatus =
-  | 'PENDING'
-  | 'CONFIRMED'
-  | 'CANCELLED'
-  | 'RESCHEDULED'
-  | 'NO_SHOW'
-  | 'COMPLETED';
+  'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'RESCHEDULED' | 'NO_SHOW' | 'COMPLETED';
 export type Channel = 'WHATSAPP' | 'SMS' | 'VOICE';
 
 export interface Appointment {
@@ -187,5 +176,12 @@ export interface AuthUser {
   roles: string[];
 }
 
-export interface LoginRequest { email: string; password: string }
-export interface LoginResponse { accessToken: string; expiresAt: string; user: AuthUser }
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+export interface LoginResponse {
+  accessToken: string;
+  expiresAt: string;
+  user: AuthUser;
+}

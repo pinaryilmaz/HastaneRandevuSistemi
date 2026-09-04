@@ -3,15 +3,15 @@ FROM node:20-alpine AS build
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --no-audit --no-fund
 
 COPY . .
 
 ARG VITE_API_BASE_URL=/api/v1
 ARG VITE_HOSPITAL_API_BASE_URL=/hospital-api/v1
 ARG VITE_WS_ENDPOINT=/api/v1/stream
-ARG VITE_USE_MOCKS=true
-ARG VITE_USE_MOCK_AUTH=true
+ARG VITE_USE_MOCKS=false
+ARG VITE_USE_MOCK_AUTH=false
 ARG VITE_CALLS_API_ENABLED=true
 ARG VITE_OBSERVABILITY_API_ENABLED=true
 

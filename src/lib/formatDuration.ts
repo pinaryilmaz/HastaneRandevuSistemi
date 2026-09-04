@@ -1,4 +1,8 @@
-export function formatDuration(startedAt: string | null, endedAt: string | null, now = Date.now()): string {
+export function formatDuration(
+  startedAt: string | null,
+  endedAt: string | null,
+  now = Date.now(),
+): string {
   if (!startedAt) return '00:00';
   const start = new Date(startedAt).getTime();
   const end = endedAt ? new Date(endedAt).getTime() : now;
