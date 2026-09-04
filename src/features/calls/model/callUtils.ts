@@ -1,4 +1,5 @@
 import type { Call, CallStatsPayload, CallStatus } from '@/api/contracts';
+import type { CallRowModel } from './callMapper';
 export function calculateCallStats(calls: Call[]): CallStatsPayload {
   const active = calls.filter((call) => call.status === 'ACTIVE');
   return {
@@ -26,4 +27,29 @@ export function sortCalls(calls: Call[]): Call[] {
 
 export function filterCallsByStatus(calls: Call[], status: CallStatus | ''): Call[] {
   return status ? calls.filter((call) => call.status === status) : calls;
+}
+
+const normalizeSearchText = (value: string) =>
+  value
+    .trim()
+    .toLocaleLowerCase('tr-TR')
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .replaceAll('ı', 'i');
+
+export function filterCallRowsByQuery(rows: CallRowModel[], query: string): CallRowModel[] {
+  const normalizedQuery = normalizeSearchText(query);
+  if (!normalizedQuery) return rows;
+
+  const queryDigits = query.replace(/\D/g, '');
+
+  return rows.filter((row) => {
+    const textMatches = [row.roomName, row.customerName].some((value) =>
+      normalizeSearchText(value).includes(normalizedQuery),
+    );
+    const phoneMatches =
+      queryDigits.length >= 3 && row.customerPhone.replace(/\D/g, '').includes(queryDigits);
+
+    return textMatches || phoneMatches;
+  });
 }

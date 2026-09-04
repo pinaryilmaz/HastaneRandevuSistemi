@@ -28,12 +28,15 @@ describe('DashboardPage', () => {
     expect(screen.queryByText('Ayşe Yılmaz')).not.toBeInTheDocument();
   });
 
-  it('aramayı debounce sonrasında API filtresine uygular ve temizler', async () => {
+  it('hasta adına göre aramayı debounce sonrasında uygular ve temizler', async () => {
     const user = userEvent.setup();
     renderWithProviders(<DashboardPage />, '/dashboard');
     await screen.findAllByText('Ayşe Yılmaz');
 
-    await user.type(screen.getByRole('textbox', { name: 'Oda veya telefon ara' }), 'room-003');
+    await user.type(
+      screen.getByRole('textbox', { name: 'Oda, hasta veya telefon ara' }),
+      'Zeynep Aksoy',
+    );
 
     await waitFor(() => expect(screen.queryAllByText('Ayşe Yılmaz')).toHaveLength(0));
     expect((await screen.findAllByText('Zeynep Aksoy')).length).toBeGreaterThan(0);

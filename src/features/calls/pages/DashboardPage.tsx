@@ -15,7 +15,12 @@ import { CallStats } from '../components/CallStats';
 import { CallTable } from '../components/CallTable';
 import { useCallRows } from '../hooks/useCallRows';
 import { useCalls } from '../hooks/useCalls';
-import { calculateCallStats, filterCallsByStatus, sortCalls } from '../model/callUtils';
+import {
+  calculateCallStats,
+  filterCallRowsByQuery,
+  filterCallsByStatus,
+  sortCalls,
+} from '../model/callUtils';
 
 export function DashboardPage() {
   const queryClient = useQueryClient();
@@ -24,10 +29,11 @@ export function DashboardPage() {
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState<CallStatus | ''>('');
   const changeQuery = useCallback((value: string) => setQuery(value), []);
-  const callsQuery = useCalls({ storeId: facilityId || undefined, q: query || undefined });
+  const callsQuery = useCalls({ storeId: facilityId || undefined });
   const calls = useMemo(() => sortCalls(callsQuery.data ?? []), [callsQuery.data]);
-  const visibleCalls = useMemo(() => filterCallsByStatus(calls, status), [calls, status]);
-  const { rows } = useCallRows(visibleCalls);
+  const statusFilteredCalls = useMemo(() => filterCallsByStatus(calls, status), [calls, status]);
+  const { rows, isLoadingNames } = useCallRows(statusFilteredCalls);
+  const visibleRows = useMemo(() => filterCallRowsByQuery(rows, query), [query, rows]);
   const stats = useMemo(() => calculateCallStats(calls), [calls]);
   const lastUpdatedAt = callsQuery.dataUpdatedAt
     ? new Date(callsQuery.dataUpdatedAt).toISOString()
@@ -100,7 +106,7 @@ export function DashboardPage() {
           <div className="shrink-0">
             <h2 className="font-semibold text-navy-900">Çağrı akışı</h2>
             <p className="mt-1 text-xs text-slate-500">
-              Aktif kayıtlar öncelikli · {visibleCalls.length}/{calls.length} kayıt gösteriliyor
+              Aktif kayıtlar öncelikli · {visibleRows.length}/{calls.length} kayıt gösteriliyor
             </p>
           </div>
           <CallFilters
@@ -116,12 +122,12 @@ export function DashboardPage() {
           />
         </CardHeader>
         <CardContent className="p-0">
-          {callsQuery.isLoading ? (
+          {callsQuery.isLoading || (Boolean(query) && isLoadingNames) ? (
             <LoadingState />
           ) : callsQuery.isError ? (
             <ErrorState error={callsQuery.error} onRetry={() => void callsQuery.refetch()} />
           ) : (
-            <CallTable calls={rows} />
+            <CallTable calls={visibleRows} />
           )}
         </CardContent>
       </Card>
