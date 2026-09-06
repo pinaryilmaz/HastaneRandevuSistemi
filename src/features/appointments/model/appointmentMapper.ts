@@ -1,17 +1,20 @@
-const serviceLabels: Record<string, string> = {
-  cardiology: 'Kardiyoloji',
-  neurology: 'Nöroloji',
-  dermatology: 'Dermatoloji',
-  orthopedics: 'Ortopedi',
-  pediatrics: 'Çocuk Sağlığı',
-  'internal-medicine': 'İç Hastalıkları',
+import { getCurrentLocale, i18n } from '@/i18n';
+
+const serviceKeys: Record<string, string> = {
+  cardiology: 'cardiology',
+  neurology: 'neurology',
+  dermatology: 'dermatology',
+  orthopedics: 'orthopedics',
+  pediatrics: 'pediatrics',
+  'internal-medicine': 'internalMedicine',
 };
 export function formatServiceType(value: string): string {
+  const serviceKey = serviceKeys[value];
   return (
-    serviceLabels[value] ??
+    (serviceKey ? i18n.t(`serviceType.${serviceKey}`) : undefined) ??
     value
       .split('-')
-      .map((part) => part.charAt(0).toLocaleUpperCase('tr-TR') + part.slice(1))
+      .map((part) => part.charAt(0).toLocaleUpperCase(getCurrentLocale()) + part.slice(1))
       .join(' ')
   );
 }

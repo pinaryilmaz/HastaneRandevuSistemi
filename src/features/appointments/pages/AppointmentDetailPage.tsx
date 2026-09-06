@@ -6,6 +6,7 @@ import {
   Stethoscope,
   UserRound,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import type { Appointment } from '@/api/contracts';
 import { EmptyState } from '@/components/common/EmptyState';
@@ -19,6 +20,7 @@ import { useMedicalAppointment } from '../hooks/useMedicalAppointment';
 import { formatServiceType } from '../model/appointmentMapper';
 
 export function AppointmentDetailPage() {
+  const { t } = useTranslation();
   const { appointmentId } = useParams();
   const location = useLocation();
   const routedAppointment = (location.state as { appointment?: Appointment } | null)?.appointment;
@@ -33,12 +35,12 @@ export function AppointmentDetailPage() {
           to="/appointments"
           className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-aqua-700"
         >
-          <ArrowLeft size={16} /> Randevulara dön
+          <ArrowLeft size={16} /> {t('appointments.back')}
         </Link>
         <Card>
           <EmptyState
-            title="Randevu bilgisi yeniden aranmalı"
-            description="Randevu kaydı bulunamadı veya artık erişilebilir değil."
+            title={t('appointments.lookupTitle')}
+            description={t('appointments.lookupDescription')}
           />
         </Card>
       </div>
@@ -52,62 +54,62 @@ export function AppointmentDetailPage() {
         to="/appointments"
         className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-aqua-700"
       >
-        <ArrowLeft size={16} /> Randevulara dön
+        <ArrowLeft size={16} /> {t('appointments.back')}
       </Link>
       <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wider text-aqua-700">
-            Randevu #{item.id.slice(0, 8)}
+            {t('appointments.reference', { id: item.id.slice(0, 8) })}
           </p>
           <h1 className="mt-2 text-2xl font-semibold tracking-tight text-navy-900 sm:text-3xl">
-            Randevu detayı
+            {t('appointments.detailTitle')}
           </h1>
-          <p className="mt-2 text-sm text-slate-500">Hasta ve planlama bilgileri · salt okunur</p>
+          <p className="mt-2 text-sm text-slate-500">{t('appointments.detailDescription')}</p>
         </div>
         <AppointmentStatusBadge status={item.status} />
       </header>
       <div className="grid gap-5 lg:grid-cols-2">
         <Card>
           <CardHeader>
-            <h2 className="font-semibold text-navy-900">Hasta bilgileri</h2>
+            <h2 className="font-semibold text-navy-900">{t('appointments.patientInfo')}</h2>
           </CardHeader>
           <CardContent className="space-y-5">
             <InfoRow
               icon={UserRound}
-              label="Hasta"
+              label={t('appointments.patient')}
               value={item.customerName}
               helper={maskPhone(item.customerPhone)}
             />
             <InfoRow
               icon={MessageCircle}
-              label="İletişim kanalı"
-              value={{ WHATSAPP: 'WhatsApp', SMS: 'SMS', VOICE: 'Sesli AI' }[item.channel]}
-              helper="Telefon bilgisi maskelenmiştir"
+              label={t('appointments.communicationChannel')}
+              value={t(`channel.${item.channel}`)}
+              helper={t('appointments.maskedPhone')}
             />
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <h2 className="font-semibold text-navy-900">Planlama</h2>
+            <h2 className="font-semibold text-navy-900">{t('appointments.scheduling')}</h2>
           </CardHeader>
           <CardContent className="space-y-5">
             <InfoRow
               icon={Stethoscope}
-              label="Poliklinik / doktor"
+              label={t('appointments.clinicDoctor')}
               value={formatServiceType(item.serviceType)}
-              helper={item.employeeName ?? 'Doktor atanmamış'}
+              helper={item.employeeName ?? t('common.doctorUnassigned')}
             />
             <InfoRow
               icon={CalendarClock}
-              label="Tarih ve saat"
+              label={t('appointments.dateTime')}
               value={formatDate(item.startTime)}
-              helper={`Bitiş: ${formatDate(item.endTime)}`}
+              helper={t('appointments.endsAt', { date: formatDate(item.endTime) })}
             />
             <InfoRow
               icon={Building2}
-              label="Hastane / şube"
+              label={t('appointments.hospitalBranch')}
               value={item.storeName}
-              helper="Yerel hastane saat dilimi"
+              helper={t('appointments.localTimezone')}
             />
           </CardContent>
         </Card>

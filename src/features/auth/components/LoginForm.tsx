@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { LockKeyhole, LoaderCircle, Mail } from 'lucide-react';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -10,10 +12,12 @@ import { Label } from '@/components/ui/label';
 import { toApiError } from '@/api/apiError';
 import { env } from '@/lib/env';
 import { login } from '../api/authApi';
-import { loginSchema, type LoginFormValues } from '../schemas/loginSchema';
+import { createLoginSchema, type LoginFormValues } from '../schemas/loginSchema';
 import { useAuthStore } from '../store/authStore';
 
 export function LoginForm() {
+  const { t } = useTranslation();
+  const loginSchema = useMemo(() => createLoginSchema(t), [t]);
   const navigate = useNavigate();
   const location = useLocation();
   const setSession = useAuthStore((state) => state.setSession);
@@ -45,7 +49,7 @@ export function LoginForm() {
     >
       {mutation.isError && <Alert variant="error">{toApiError(mutation.error).message}</Alert>}
       <div>
-        <Label htmlFor="email">E-posta</Label>
+        <Label htmlFor="email">{t('login.email')}</Label>
         <div className="relative">
           <Mail className="absolute left-3 top-3.5 text-slate-400" size={17} aria-hidden="true" />
           <Input
@@ -65,7 +69,7 @@ export function LoginForm() {
         )}
       </div>
       <div>
-        <Label htmlFor="password">Şifre</Label>
+        <Label htmlFor="password">{t('login.password')}</Label>
         <div className="relative">
           <LockKeyhole
             className="absolute left-3 top-3.5 text-slate-400"
@@ -91,10 +95,11 @@ export function LoginForm() {
       <Button type="submit" size="lg" className="w-full" disabled={mutation.isPending}>
         {mutation.isPending ? (
           <>
-            <LoaderCircle className="animate-spin" size={18} aria-hidden="true" /> Giriş yapılıyor
+            <LoaderCircle className="animate-spin" size={18} aria-hidden="true" />{' '}
+            {t('login.submitting')}
           </>
         ) : (
-          'Güvenli giriş yap'
+          t('login.submit')
         )}
       </Button>
     </form>

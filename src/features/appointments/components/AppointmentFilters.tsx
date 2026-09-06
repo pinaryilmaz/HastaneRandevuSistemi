@@ -1,4 +1,5 @@
 import type { AppointmentStatus } from '@/api/contracts';
+import { useTranslation } from 'react-i18next';
 import { DebouncedSearchInput } from '@/components/common/DebouncedSearchInput';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -20,6 +21,7 @@ export function AppointmentFilters({
   value: AppointmentFilterValues;
   onChange: (value: AppointmentFilterValues) => void;
 }) {
+  const { t } = useTranslation();
   const update = <K extends keyof AppointmentFilterValues>(
     key: K,
     next: AppointmentFilterValues[K],
@@ -28,13 +30,13 @@ export function AppointmentFilters({
   return (
     <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
       <div>
-        <Label htmlFor="appointment-phone">Hasta telefonu</Label>
+        <Label htmlFor="appointment-phone">{t('appointments.patientPhone')}</Label>
         <DebouncedSearchInput
           id="appointment-phone"
-          ariaLabel="Hasta telefonuyla ara"
+          ariaLabel={t('appointments.phoneSearch')}
           value={value.patientPhone}
           onChange={(phone) => update('patientPhone', phone)}
-          placeholder="Hasta telefonu ile ara"
+          placeholder={t('appointments.phonePlaceholder')}
         />
       </div>
       <div>
@@ -42,28 +44,28 @@ export function AppointmentFilters({
           className="mb-1.5 block text-sm font-medium text-slate-700"
           id="appointment-branch-label"
         >
-          Hastane / şube
+          {t('appointments.hospitalBranch')}
         </span>
         <HospitalBranchFilter value={value.storeId} onChange={(id) => update('storeId', id)} />
       </div>
       <div>
-        <Label htmlFor="appointment-status">Randevu durumu</Label>
+        <Label htmlFor="appointment-status">{t('appointments.status')}</Label>
         <Select
           id="appointment-status"
           value={value.status}
           onChange={(event) => update('status', event.target.value as AppointmentStatus | '')}
         >
-          <option value="">Tüm durumlar</option>
-          <option value="PENDING">Bekliyor</option>
-          <option value="CONFIRMED">Onaylandı</option>
-          <option value="CANCELLED">İptal</option>
-          <option value="RESCHEDULED">Yeniden planlandı</option>
-          <option value="NO_SHOW">Gelmedi</option>
-          <option value="COMPLETED">Tamamlandı</option>
+          <option value="">{t('calls.allStatuses')}</option>
+          <option value="PENDING">{t('status.appointment.PENDING')}</option>
+          <option value="CONFIRMED">{t('status.appointment.CONFIRMED')}</option>
+          <option value="CANCELLED">{t('status.appointment.CANCELLED')}</option>
+          <option value="RESCHEDULED">{t('status.appointment.RESCHEDULED')}</option>
+          <option value="NO_SHOW">{t('status.appointment.NO_SHOW')}</option>
+          <option value="COMPLETED">{t('status.appointment.COMPLETED')}</option>
         </Select>
       </div>
       <div>
-        <Label htmlFor="appointment-from">Başlangıç tarihi</Label>
+        <Label htmlFor="appointment-from">{t('appointments.startDate')}</Label>
         <Input
           id="appointment-from"
           type="date"
@@ -72,7 +74,7 @@ export function AppointmentFilters({
         />
       </div>
       <div>
-        <Label htmlFor="appointment-to">Bitiş tarihi</Label>
+        <Label htmlFor="appointment-to">{t('appointments.endDate')}</Label>
         <Input
           id="appointment-to"
           type="date"

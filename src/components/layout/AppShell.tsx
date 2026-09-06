@@ -1,10 +1,12 @@
 import { useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 import { useRealtimeStream } from '@/features/system/hooks/useRealtimeStream';
 import { Header } from './Header';
 import { Sidebar } from './Sidebar';
 
 export function AppShell() {
+  const { t } = useTranslation();
   const [menu, setMenu] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const openMenu = useCallback(() => setMenu(true), []);
@@ -17,7 +19,7 @@ export function AppShell() {
         href="#main-content"
         className="fixed left-4 top-3 z-[60] -translate-y-20 rounded-lg bg-navy-900 px-4 py-2 text-sm font-semibold text-white shadow-lg transition-transform focus:translate-y-0"
       >
-        Ana içeriğe geç
+        {t('navigation.skipToContent')}
       </a>
       <Sidebar open={menu} onClose={closeMenu} />
       <div className="lg:pl-72">

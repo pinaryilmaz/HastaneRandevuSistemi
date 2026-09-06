@@ -1,6 +1,7 @@
 import type { LucideIcon } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/cn';
+import { formatNumber } from '@/lib/formatNumber';
 export function StatCard({
   label,
   value,
@@ -19,7 +20,9 @@ export function StatCard({
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-slate-500">{label}</p>
-          <p className="mt-2 text-4xl font-semibold tracking-tight text-navy-900">{value}</p>
+          <p className="mt-2 text-4xl font-semibold tracking-tight text-navy-900">
+            {formatNumber(value)}
+          </p>
           <p className="mt-2 text-xs text-slate-500">{description}</p>
         </div>
         <div

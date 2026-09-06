@@ -1,6 +1,8 @@
 import type { RefObject } from 'react';
 import { LogOut, Menu, ShieldCheck, UserRound } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { LanguageSelector } from '@/components/common/LanguageSelector';
 import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/features/auth/store/authStore';
 import { ConnectionBadge } from '@/features/system/components/ConnectionBadge';
@@ -11,6 +13,7 @@ export function Header({
   onMenu: () => void;
   menuButtonRef: RefObject<HTMLButtonElement>;
 }) {
+  const { t } = useTranslation();
   const user = useAuthStore((state) => state.user);
   const clear = useAuthStore((state) => state.clearSession);
   const navigate = useNavigate();
@@ -24,7 +27,7 @@ export function Header({
           size="sm"
           className="shrink-0 px-2 lg:hidden"
           onClick={onMenu}
-          aria-label="Ana menüyü aç"
+          aria-label={t('navigation.openMenu')}
           aria-haspopup="dialog"
         >
           <Menu size={21} aria-hidden="true" />
@@ -32,12 +35,13 @@ export function Header({
         <ConnectionBadge />
       </div>
       <div className="flex shrink-0 items-center gap-1 sm:gap-3">
-        <span className="hidden items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 md:inline-flex">
-          <ShieldCheck size={13} aria-hidden="true" /> Yetkili oturum
+        <LanguageSelector compact />
+        <span className="hidden w-40 items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-medium text-emerald-700 md:inline-flex">
+          <ShieldCheck size={13} aria-hidden="true" /> {t('header.authorizedSession')}
         </span>
-        <div className="hidden text-right sm:block">
-          <p className="max-w-40 truncate text-sm font-semibold text-slate-800">{user?.name}</p>
-          <p className="text-xs text-slate-500">Operasyon kullanıcısı</p>
+        <div className="hidden w-44 text-right sm:block">
+          <p className="truncate text-sm font-semibold text-slate-800">{user?.name}</p>
+          <p className="text-xs text-slate-500">{t('header.operator')}</p>
         </div>
         <span
           className="hidden h-10 w-10 items-center justify-center rounded-xl bg-navy-900 text-white sm:flex"
@@ -49,7 +53,7 @@ export function Header({
           variant="ghost"
           size="sm"
           className="shrink-0 px-2"
-          aria-label="Oturumu kapat"
+          aria-label={t('header.logout')}
           onClick={() => {
             clear();
             navigate('/login', { replace: true });

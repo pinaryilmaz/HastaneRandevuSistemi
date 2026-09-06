@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ArrowUp, CircleAlert, CircleCheck, TriangleAlert } from 'lucide-react';
 import type { LogEvent } from '@/api/contracts';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,7 @@ const level = {
   ERROR: { icon: CircleAlert, className: 'text-rose-700 bg-rose-50' },
 };
 export function LogStream({ logs }: { logs: LogEvent[] }) {
+  const { t } = useTranslation();
   const container = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
   const firstId = logs[0]?.id;
@@ -23,7 +25,7 @@ export function LogStream({ logs }: { logs: LogEvent[] }) {
       <div
         ref={container}
         role="log"
-        aria-label="Canlı sistem logları"
+        aria-label={t('system.liveLogs')}
         tabIndex={0}
         onScroll={(event) => setPaused(event.currentTarget.scrollTop > 30)}
         className="max-h-[520px] overflow-y-auto bg-[#0b1729] p-3 font-mono text-xs sm:p-4"
@@ -58,7 +60,7 @@ export function LogStream({ logs }: { logs: LogEvent[] }) {
             );
           })
         ) : (
-          <p className="p-8 text-center text-slate-400 sm:p-10">Henüz log kaydı yok.</p>
+          <p className="p-8 text-center text-slate-400 sm:p-10">{t('system.noLogs')}</p>
         )}
       </div>
       {paused && (
@@ -70,7 +72,7 @@ export function LogStream({ logs }: { logs: LogEvent[] }) {
             setPaused(false);
           }}
         >
-          <ArrowUp size={14} aria-hidden="true" /> Canlı akışa dön
+          <ArrowUp size={14} aria-hidden="true" /> {t('system.returnToLive')}
         </Button>
       )}
     </div>

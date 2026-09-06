@@ -32,9 +32,7 @@ const AppointmentDetailPage = lazy(() =>
 const SystemPage = lazy(() =>
   import('@/features/system/pages/SystemPage').then((module) => ({ default: module.SystemPage })),
 );
-const page = (node: ReactNode) => (
-  <Suspense fallback={<LoadingState rows={5} label="Sayfa yükleniyor" />}>{node}</Suspense>
-);
+const page = (node: ReactNode) => <Suspense fallback={<LoadingState rows={5} />}>{node}</Suspense>;
 
 export const router = createBrowserRouter([
   { path: '/login', element: page(<LoginPage />) },

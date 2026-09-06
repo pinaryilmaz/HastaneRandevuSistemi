@@ -1,4 +1,5 @@
 import { ArrowLeft, ExternalLink, FileText, Phone, UserRound } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Link, useParams } from 'react-router-dom';
 import { ErrorState } from '@/components/common/ErrorState';
 import { LoadingState } from '@/components/common/LoadingState';
@@ -16,6 +17,7 @@ import { CallTimeline } from '../components/CallTimeline';
 import { useCallDetail } from '../hooks/useCallDetail';
 
 export function CallDetailPage() {
+  const { t } = useTranslation();
   const { callId } = useParams();
   const callQuery = useCallDetail(callId);
   const appointmentQuery = useMedicalAppointment(callQuery.data?.appointmentId);
@@ -28,16 +30,16 @@ export function CallDetailPage() {
           to="/dashboard"
           className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-aqua-700"
         >
-          <ArrowLeft size={16} /> Çağrı paneline dön
+          <ArrowLeft size={16} /> {t('calls.back')}
         </Link>
         <IntegrationPendingState
-          title="Çağrı detayı henüz kullanılamıyor"
-          description="Çağrı servisi ve detay endpoint'i API Gateway'e eklendiğinde bu ekran gerçek görüşme verilerini gösterecek."
+          title={t('calls.pendingDetailTitle')}
+          description={t('calls.pendingDetailDescription')}
           items={[
-            'Görüşme durumu',
-            'Hasta ve randevu eşleşmesi',
-            'Zaman çizelgesi',
-            'Güvenli transcript bağlantısı',
+            t('calls.pendingDetailItems.status'),
+            t('calls.pendingDetailItems.match'),
+            t('calls.pendingDetailItems.timeline'),
+            t('calls.pendingDetailItems.transcript'),
           ]}
         />
       </div>
@@ -52,17 +54,15 @@ export function CallDetailPage() {
         to="/dashboard"
         className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-aqua-700"
       >
-        <ArrowLeft size={16} /> Çağrı paneline dön
+        <ArrowLeft size={16} /> {t('calls.back')}
       </Link>
       <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
         <div>
           <p className="break-all font-mono text-xs font-semibold text-aqua-700">{call.roomName}</p>
           <h1 className="mt-2 text-2xl font-semibold tracking-tight text-navy-900 sm:text-3xl">
-            Çağrı detayı
+            {t('calls.detailTitle')}
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
-            Randevu ve görüşme sonuçlarının salt okunur özeti.
-          </p>
+          <p className="mt-2 text-sm text-slate-500">{t('calls.detailDescription')}</p>
         </div>
         <CallStatusBadge status={call.status} />
       </header>
@@ -70,7 +70,7 @@ export function CallDetailPage() {
         <div className="space-y-5">
           <Card>
             <CardHeader>
-              <h2 className="font-semibold text-navy-900">Hasta ve randevu</h2>
+              <h2 className="font-semibold text-navy-900">{t('calls.patientAppointment')}</h2>
             </CardHeader>
             <CardContent>
               {appointmentQuery.isLoading ? (
@@ -79,48 +79,50 @@ export function CallDetailPage() {
                 <div className="grid gap-5 sm:grid-cols-2">
                   <Detail
                     icon={UserRound}
-                    label="Hasta"
+                    label={t('calls.patient')}
                     value={appointment.customerName}
                     helper={maskPhone(appointment.customerPhone)}
                   />
                   <Detail
                     icon={Phone}
-                    label="Poliklinik / hizmet"
+                    label={t('calls.clinicService')}
                     value={formatServiceType(appointment.serviceType)}
-                    helper={appointment.employeeName ?? 'Doktor atanmamış'}
+                    helper={appointment.employeeName ?? t('common.doctorUnassigned')}
                   />
                   <Detail
                     icon={FileText}
-                    label="Randevu zamanı"
+                    label={t('calls.appointmentTime')}
                     value={formatDate(appointment.startTime)}
                     helper={appointment.storeName}
                   />
                   <div>
                     <p className="mb-2 text-xs font-medium uppercase tracking-wide text-slate-500">
-                      Randevu durumu
+                      {t('calls.appointmentStatus')}
                     </p>
                     <AppointmentStatusBadge status={appointment.status} />
                   </div>
                 </div>
               ) : (
-                <p className="text-sm text-slate-500">Bağlı randevu bilgisi alınamadı.</p>
+                <p className="text-sm text-slate-500">{t('calls.appointmentUnavailable')}</p>
               )}
             </CardContent>
           </Card>
           <Card>
             <CardHeader>
-              <h2 className="font-semibold text-navy-900">Görüşme sonucu</h2>
+              <h2 className="font-semibold text-navy-900">{t('calls.resultTitle')}</h2>
             </CardHeader>
             <CardContent className="grid gap-5 sm:grid-cols-2">
               <div>
-                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Sonuç</p>
+                <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                  {t('calls.result')}
+                </p>
                 <p className="mt-2 font-semibold text-slate-800">
-                  {call.result ? resultLabels[call.result] : 'Henüz sonuçlanmadı'}
+                  {call.result ? t(`calls.resultLabels.${call.result}`) : t('calls.pendingResult')}
                 </p>
               </div>
               <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-                  Transcript
+                  {t('calls.transcript')}
                 </p>
                 {transcript ? (
                   <a
@@ -129,10 +131,10 @@ export function CallDetailPage() {
                     rel="noreferrer"
                     className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-aqua-700 hover:underline"
                   >
-                    Görüşme kaydını aç <ExternalLink size={14} />
+                    {t('calls.openTranscript')} <ExternalLink size={14} />
                   </a>
                 ) : (
-                  <p className="mt-2 text-sm text-slate-500">Transcript bağlantısı bulunmuyor.</p>
+                  <p className="mt-2 text-sm text-slate-500">{t('calls.transcriptUnavailable')}</p>
                 )}
               </div>
             </CardContent>
@@ -140,10 +142,8 @@ export function CallDetailPage() {
         </div>
         <Card>
           <CardHeader>
-            <h2 className="font-semibold text-navy-900">Durum zaman çizelgesi</h2>
-            <p className="mt-1 text-xs text-slate-500">
-              Backend’in sunduğu mevcut zamanlardan üretilir.
-            </p>
+            <h2 className="font-semibold text-navy-900">{t('calls.timeline')}</h2>
+            <p className="mt-1 text-xs text-slate-500">{t('calls.timelineDescription')}</p>
           </CardHeader>
           <CardContent>
             <CallTimeline call={call} />
@@ -153,11 +153,6 @@ export function CallDetailPage() {
     </div>
   );
 }
-const resultLabels = {
-  CONFIRMED: 'Randevu doğrulandı',
-  DECLINED: 'Hasta reddetti',
-  RESCHEDULE_REQUESTED: 'Yeniden planlama istendi',
-};
 function Detail({
   icon: Icon,
   label,

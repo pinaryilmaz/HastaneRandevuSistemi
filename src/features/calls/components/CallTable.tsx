@@ -1,39 +1,35 @@
 import { ChevronRight, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { EmptyState } from '@/components/common/EmptyState';
 import { Table, TableContainer, Td, Th } from '@/components/ui/table';
 import { formatDuration } from '@/lib/formatDuration';
+import { formatNumber } from '@/lib/formatNumber';
 import { maskPhone } from '@/lib/maskPhone';
 import type { CallRowModel } from '../model/callMapper';
 import { CallStatusBadge } from './CallStatusBadge';
 
 export function CallTable({ calls }: { calls: CallRowModel[] }) {
+  const { t } = useTranslation();
   if (!calls.length)
-    return (
-      <EmptyState
-        title="Çağrı bulunamadı"
-        description="Arama ölçütlerini veya seçili hastaneyi değiştirmeyi deneyin."
-      />
-    );
+    return <EmptyState title={t('calls.emptyTitle')} description={t('calls.emptyDescription')} />;
   return (
     <>
       <div className="hidden md:block">
         <TableContainer>
           <Table>
-            <caption className="sr-only">
-              Çağrı odaları, hastalar, şubeler ve görüşme durumları
-            </caption>
+            <caption className="sr-only">{t('calls.tableCaption')}</caption>
             <thead>
               <tr>
-                <Th>Oda</Th>
-                <Th>Hasta</Th>
-                <Th>Telefon</Th>
-                <Th>Şube</Th>
-                <Th>Katılımcı</Th>
-                <Th>Durum</Th>
-                <Th>Süre</Th>
+                <Th>{t('calls.room')}</Th>
+                <Th>{t('calls.patient')}</Th>
+                <Th>{t('calls.phone')}</Th>
+                <Th>{t('calls.branch')}</Th>
+                <Th>{t('calls.participants')}</Th>
+                <Th>{t('calls.status')}</Th>
+                <Th>{t('calls.duration')}</Th>
                 <Th>
-                  <span className="sr-only">Detay</span>
+                  <span className="sr-only">{t('common.details')}</span>
                 </Th>
               </tr>
             </thead>
@@ -54,7 +50,7 @@ export function CallTable({ calls }: { calls: CallRowModel[] }) {
                   <Td>
                     <span className="inline-flex items-center gap-1.5">
                       <Users size={14} className="text-slate-400" aria-hidden="true" />
-                      {call.participantCount}
+                      {formatNumber(call.participantCount)}
                     </span>
                   </Td>
                   <Td>
@@ -66,7 +62,7 @@ export function CallTable({ calls }: { calls: CallRowModel[] }) {
                   <Td>
                     <Link
                       to={`/calls/${call.id}`}
-                      aria-label={`${call.customerName} çağrı detayını aç`}
+                      aria-label={t('calls.openDetails', { name: call.customerName })}
                       className="inline-flex rounded-lg p-2 text-slate-400 transition hover:bg-white hover:text-aqua-700"
                     >
                       <ChevronRight size={18} aria-hidden="true" />
@@ -78,12 +74,12 @@ export function CallTable({ calls }: { calls: CallRowModel[] }) {
           </Table>
         </TableContainer>
       </div>
-      <div className="divide-y divide-slate-100 md:hidden" aria-label="Çağrı listesi">
+      <div className="divide-y divide-slate-100 md:hidden" aria-label={t('calls.list')}>
         {calls.map((call) => (
           <Link
             key={call.id}
             to={`/calls/${call.id}`}
-            aria-label={`${call.customerName} çağrı detayını aç`}
+            aria-label={t('calls.openDetails', { name: call.customerName })}
             className="block p-4 transition hover:bg-slate-50"
           >
             <div className="flex items-start justify-between gap-3">
@@ -97,13 +93,16 @@ export function CallTable({ calls }: { calls: CallRowModel[] }) {
             </div>
             <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
               <div className="min-w-0">
-                <dt className="text-slate-500">Şube</dt>
+                <dt className="text-slate-500">{t('calls.branch')}</dt>
                 <dd className="mt-0.5 break-words font-medium text-slate-600">{call.storeName}</dd>
               </div>
               <div className="text-right">
-                <dt className="text-slate-500">Görüşme</dt>
+                <dt className="text-slate-500">{t('calls.conversation')}</dt>
                 <dd className="mt-0.5 font-medium text-slate-600">
-                  {call.participantCount} katılımcı · {formatDuration(call.startedAt, call.endedAt)}
+                  {t('calls.participantCount', {
+                    count: formatNumber(call.participantCount),
+                  })}{' '}
+                  · {formatDuration(call.startedAt, call.endedAt)}
                 </dd>
               </div>
             </dl>

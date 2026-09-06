@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Search, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Input } from '@/components/ui/input';
 
 export function DebouncedSearchInput({
   value,
   onChange,
-  placeholder = 'Ara...',
+  placeholder,
   delay = 300,
   id,
-  ariaLabel = 'Ara',
+  ariaLabel,
 }: {
   value: string;
   onChange: (value: string) => void;
@@ -17,6 +18,7 @@ export function DebouncedSearchInput({
   id?: string;
   ariaLabel?: string;
 }) {
+  const { t } = useTranslation();
   const [draft, setDraft] = useState(value);
   useEffect(() => setDraft(value), [value]);
   useEffect(() => {
@@ -32,16 +34,16 @@ export function DebouncedSearchInput({
       />
       <Input
         id={id}
-        aria-label={id ? undefined : ariaLabel}
+        aria-label={id ? undefined : (ariaLabel ?? t('common.search'))}
         value={draft}
         onChange={(event) => setDraft(event.target.value)}
-        placeholder={placeholder}
+        placeholder={placeholder ?? `${t('common.search')}...`}
         className="pl-9 pr-10"
       />
       {draft && (
         <button
           type="button"
-          aria-label="Aramayı temizle"
+          aria-label={t('common.clearSearch')}
           onClick={() => setDraft('')}
           className="absolute right-2 top-2 inline-flex size-7 items-center justify-center rounded-md text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
         >

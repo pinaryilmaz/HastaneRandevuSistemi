@@ -1,4 +1,5 @@
 import { CircleCheck, Clock3, PlugZap } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
 
 export function IntegrationPendingState({
@@ -10,6 +11,7 @@ export function IntegrationPendingState({
   description: string;
   items: string[];
 }) {
+  const { t } = useTranslation();
   return (
     <Card className="overflow-hidden border-sky-200 bg-gradient-to-br from-white to-sky-50/60">
       <CardContent className="p-7 sm:p-9">
@@ -19,7 +21,7 @@ export function IntegrationPendingState({
           </span>
           <div className="max-w-2xl">
             <div className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 ring-1 ring-amber-200">
-              <Clock3 size={13} aria-hidden="true" /> Backend entegrasyonu bekleniyor
+              <Clock3 size={13} aria-hidden="true" /> {t('common.pendingBadge')}
             </div>
             <h2 className="mt-4 text-xl font-semibold text-navy-900">{title}</h2>
             <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
@@ -31,10 +33,7 @@ export function IntegrationPendingState({
                 </li>
               ))}
             </ul>
-            <p className="mt-5 text-xs text-slate-500">
-              Hazır hastane modülleri kullanılabilir; bu ekran gerekli API sağlandığında
-              etkinleşecektir.
-            </p>
+            <p className="mt-5 text-xs text-slate-500">{t('common.pendingFooter')}</p>
           </div>
         </div>
       </CardContent>

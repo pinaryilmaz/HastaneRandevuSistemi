@@ -1,4 +1,5 @@
 import type { LogEvent, LogLevel, RealtimeEnvelope } from '@/api/contracts';
+import { i18n } from '@/i18n';
 
 const eventAliases: Record<string, string> = {
   CALL_CREATED: 'call.started',
@@ -13,16 +14,16 @@ const eventAliases: Record<string, string> = {
   STATS_UPDATED: 'stats.updated',
 };
 
-const labels: Record<string, string> = {
-  'call.started': 'Yeni çağrı başlatıldı',
-  'call.updated': 'Çağrı durumu güncellendi',
-  'call.ended': 'Çağrı sona erdi',
-  'appointment.created': 'Yeni randevu oluşturuldu',
-  'appointment.updated': 'Randevu güncellendi',
-  'appointment.cancelled': 'Randevu iptal edildi',
-  'message.received': 'Yeni WhatsApp mesajı alındı',
-  'crm.offer.generated': 'CRM önerisi oluşturuldu',
-  'stats.updated': 'Canlı çağrı istatistikleri güncellendi',
+const labelKeys: Record<string, string> = {
+  'call.started': 'callStarted',
+  'call.updated': 'callUpdated',
+  'call.ended': 'callEnded',
+  'appointment.created': 'appointmentCreated',
+  'appointment.updated': 'appointmentUpdated',
+  'appointment.cancelled': 'appointmentCancelled',
+  'message.received': 'messageReceived',
+  'crm.offer.generated': 'crmOfferGenerated',
+  'stats.updated': 'statsUpdated',
 };
 
 export function normalizeRealtimeEventName(envelope: RealtimeEnvelope): string {
@@ -52,7 +53,7 @@ export function realtimeToLog(envelope: RealtimeEnvelope): LogEvent {
     timestamp: envelope.timestamp,
     level: inferLevel(event),
     service: inferService(event),
-    message: labels[event] ?? event,
+    message: labelKeys[event] ? i18n.t(`system.events.${labelKeys[event]}`) : event,
     correlationId: envelope.correlationId,
     meta:
       typeof envelope.payload === 'object' && envelope.payload

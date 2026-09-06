@@ -1,6 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { Activity, Info } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { CallStatus } from '@/api/contracts';
 import { queryKeys } from '@/api/queryKeys';
 import { ErrorState } from '@/components/common/ErrorState';
@@ -9,6 +10,7 @@ import { LoadingState } from '@/components/common/LoadingState';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { HospitalBranchFilter } from '@/features/facilities/components/HospitalBranchFilter';
 import { env } from '@/lib/env';
+import { formatNumber } from '@/lib/formatNumber';
 import { useFilterStore } from '@/store/filterStore';
 import { CallFilters } from '../components/CallFilters';
 import { CallStats } from '../components/CallStats';
@@ -23,6 +25,7 @@ import {
 } from '../model/callUtils';
 
 export function DashboardPage() {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const facilityId = useFilterStore((state) => state.facilityId);
   const setFacilityId = useFilterStore((state) => state.setFacilityId);
@@ -57,23 +60,21 @@ export function DashboardPage() {
       <div className="space-y-6">
         <header>
           <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-aqua-50 px-3 py-1 text-xs font-semibold text-aqua-700">
-            <Activity size={13} /> Canlı operasyon
+            <Activity size={13} /> {t('dashboard.eyebrow')}
           </div>
           <h1 className="text-2xl font-semibold tracking-tight text-navy-900 sm:text-3xl">
-            Çağrı yönetim paneli
+            {t('dashboard.title')}
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
-            AI destekli teyit çağrılarını ve eşleşmeleri tek görünümden izleyin.
-          </p>
+          <p className="mt-2 text-sm text-slate-500">{t('dashboard.description')}</p>
         </header>
         <IntegrationPendingState
-          title="Çağrı servisi henüz bağlanmadı"
-          description="Yeni hastane backend'i çağrı verilerini sunmuyor. API Gateway ve çağrı servisi sözleşmesi tamamlandığında bu panel otomatik olarak gerçek zamanlı izlemeye açılacak."
+          title={t('dashboard.pendingTitle')}
+          description={t('dashboard.pendingDescription')}
           items={[
-            'Çağrı listesi ve detayları',
-            'Canlı katılımcı sayaçları',
-            'Randevu eşleştirmeleri',
-            'WebSocket olay akışı',
+            t('dashboard.pendingItems.list'),
+            t('dashboard.pendingItems.stats'),
+            t('dashboard.pendingItems.matches'),
+            t('dashboard.pendingItems.websocket'),
           ]}
         />
       </div>
@@ -85,14 +86,12 @@ export function DashboardPage() {
       <header className="flex flex-col justify-between gap-4 lg:flex-row lg:items-end">
         <div>
           <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-aqua-50 px-3 py-1 text-xs font-semibold text-aqua-700">
-            <Activity size={13} /> Canlı operasyon
+            <Activity size={13} /> {t('dashboard.eyebrow')}
           </div>
           <h1 className="text-2xl font-semibold tracking-tight text-navy-900 sm:text-3xl">
-            Çağrı yönetim paneli
+            {t('dashboard.title')}
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
-            AI destekli teyit çağrılarını ve eşleşmeleri tek görünümden izleyin.
-          </p>
+          <p className="mt-2 text-sm text-slate-500">{t('dashboard.description')}</p>
         </div>
         <div className="w-full sm:w-80">
           <HospitalBranchFilter value={facilityId} onChange={setFacilityId} />
@@ -104,9 +103,12 @@ export function DashboardPage() {
       <Card>
         <CardHeader className="flex flex-col justify-between gap-4 border-b border-slate-100 xl:flex-row xl:items-start">
           <div className="shrink-0">
-            <h2 className="font-semibold text-navy-900">Çağrı akışı</h2>
+            <h2 className="font-semibold text-navy-900">{t('dashboard.stream')}</h2>
             <p className="mt-1 text-xs text-slate-500">
-              Aktif kayıtlar öncelikli · {visibleRows.length}/{calls.length} kayıt gösteriliyor
+              {t('dashboard.streamSummary', {
+                visible: formatNumber(visibleRows.length),
+                total: formatNumber(calls.length),
+              })}
             </p>
           </div>
           <CallFilters
@@ -134,10 +136,7 @@ export function DashboardPage() {
 
       <div className="flex items-start gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs text-slate-500">
         <Info className="mt-0.5 shrink-0" size={14} />
-        <p>
-          Hasta isimleri çağrının bağlı olduğu randevu kaydından alınır. Telefon numaraları güvenlik
-          gereği maskelenmiştir.
-        </p>
+        <p>{t('dashboard.dataNote')}</p>
       </div>
     </div>
   );

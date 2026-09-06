@@ -1,4 +1,5 @@
 import { ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import type { Appointment } from '@/api/contracts';
 import { EmptyState } from '@/components/common/EmptyState';
@@ -8,14 +9,13 @@ import { maskPhone } from '@/lib/maskPhone';
 import { formatServiceType } from '../model/appointmentMapper';
 import { AppointmentStatusBadge } from './AppointmentStatusBadge';
 
-const channelLabels = { WHATSAPP: 'WhatsApp', SMS: 'SMS', VOICE: 'Sesli AI' };
-
 export function AppointmentTable({ appointments }: { appointments: Appointment[] }) {
+  const { t } = useTranslation();
   if (!appointments.length) {
     return (
       <EmptyState
-        title="Randevu bulunamadı"
-        description="Hasta telefonunu veya diğer filtreleri kontrol etmeyi deneyin."
+        title={t('appointments.emptyTitle')}
+        description={t('appointments.emptyDescription')}
       />
     );
   }
@@ -25,19 +25,17 @@ export function AppointmentTable({ appointments }: { appointments: Appointment[]
       <div className="hidden md:block">
         <TableContainer>
           <Table>
-            <caption className="sr-only">
-              Hasta randevuları, poliklinikler, doktorlar ve durumları
-            </caption>
+            <caption className="sr-only">{t('appointments.tableCaption')}</caption>
             <thead>
               <tr>
-                <Th>Hasta</Th>
-                <Th>Poliklinik</Th>
-                <Th>Doktor</Th>
-                <Th>Tarih</Th>
-                <Th>Kanal</Th>
-                <Th>Durum</Th>
+                <Th>{t('appointments.patient')}</Th>
+                <Th>{t('appointments.clinic')}</Th>
+                <Th>{t('appointments.doctor')}</Th>
+                <Th>{t('appointments.date')}</Th>
+                <Th>{t('appointments.channel')}</Th>
+                <Th>{t('calls.status')}</Th>
                 <Th>
-                  <span className="sr-only">Detay</span>
+                  <span className="sr-only">{t('common.details')}</span>
                 </Th>
               </tr>
             </thead>
@@ -54,15 +52,15 @@ export function AppointmentTable({ appointments }: { appointments: Appointment[]
                     <p>{formatServiceType(appointment.serviceType)}</p>
                     <p className="mt-0.5 text-xs text-slate-500">{appointment.storeName}</p>
                   </Td>
-                  <Td>{appointment.employeeName ?? 'Atanmadı'}</Td>
+                  <Td>{appointment.employeeName ?? t('common.unassigned')}</Td>
                   <Td className="whitespace-nowrap">{formatDate(appointment.startTime)}</Td>
-                  <Td>{channelLabels[appointment.channel]}</Td>
+                  <Td>{t(`channel.${appointment.channel}`)}</Td>
                   <Td>
                     <AppointmentStatusBadge status={appointment.status} />
                   </Td>
                   <Td>
                     <Link
-                      aria-label={`${appointment.customerName} randevu detayını aç`}
+                      aria-label={t('appointments.openDetails', { name: appointment.customerName })}
                       to={`/appointments/${appointment.id}`}
                       state={{ appointment }}
                       className="inline-flex rounded-lg p-2 text-slate-400 hover:text-aqua-700"
@@ -82,7 +80,7 @@ export function AppointmentTable({ appointments }: { appointments: Appointment[]
             key={appointment.id}
             to={`/appointments/${appointment.id}`}
             state={{ appointment }}
-            aria-label={`${appointment.customerName} randevu detayını aç`}
+            aria-label={t('appointments.openDetails', { name: appointment.customerName })}
             className="block p-4 transition hover:bg-slate-50"
           >
             <div className="flex items-start justify-between gap-3">
@@ -99,27 +97,27 @@ export function AppointmentTable({ appointments }: { appointments: Appointment[]
             </div>
             <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-3 text-xs">
               <div>
-                <dt className="text-slate-500">Doktor</dt>
+                <dt className="text-slate-500">{t('appointments.doctor')}</dt>
                 <dd className="mt-0.5 font-medium text-slate-600">
-                  {appointment.employeeName ?? 'Atanmamış'}
+                  {appointment.employeeName ?? t('common.unassigned')}
                 </dd>
               </div>
               <div className="text-right">
-                <dt className="text-slate-500">Tarih</dt>
+                <dt className="text-slate-500">{t('appointments.date')}</dt>
                 <dd className="mt-0.5 font-medium text-slate-600">
                   {formatDate(appointment.startTime)}
                 </dd>
               </div>
               <div className="min-w-0">
-                <dt className="text-slate-500">Şube</dt>
+                <dt className="text-slate-500">{t('appointments.branch')}</dt>
                 <dd className="mt-0.5 break-words font-medium text-slate-600">
                   {appointment.storeName}
                 </dd>
               </div>
               <div className="text-right">
-                <dt className="text-slate-500">Kanal</dt>
+                <dt className="text-slate-500">{t('appointments.channel')}</dt>
                 <dd className="mt-0.5 font-medium text-slate-600">
-                  {channelLabels[appointment.channel]}
+                  {t(`channel.${appointment.channel}`)}
                 </dd>
               </div>
             </dl>

@@ -1,15 +1,16 @@
 import { Check, Circle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { Call } from '@/api/contracts';
 import { formatDate } from '@/lib/formatDate';
-import { callStatusConfig } from '@/lib/statusConfig';
 export function CallTimeline({ call }: { call: Call }) {
+  const { t } = useTranslation();
   const items = [
-    { label: 'Çağrı başlatıldı', value: call.startedAt },
+    { label: t('calls.started'), value: call.startedAt },
     {
-      label: `Mevcut durum: ${callStatusConfig[call.status].label}`,
+      label: t('calls.currentStatus', { status: t(`status.call.${call.status}`) }),
       value: call.endedAt ?? call.startedAt,
     },
-    ...(call.endedAt ? [{ label: 'Çağrı sona erdi', value: call.endedAt }] : []),
+    ...(call.endedAt ? [{ label: t('calls.ended'), value: call.endedAt }] : []),
   ];
   return (
     <ol className="space-y-0">

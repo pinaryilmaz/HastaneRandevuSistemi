@@ -2,6 +2,11 @@
 
 AI destekli çağrı, randevu ve mikroservis akışlarını izlemek için geliştirilen React 18 tabanlı frontend uygulamasıdır. Panel salt okunurdur ve telefon numaralarını her zaman maskeli gösterir.
 
+Arayüz Türkçe ve İngilizce kullanılabilir. Header ve giriş ekranındaki dil seçiciyle
+dil anında değiştirilir; seçim tarayıcıda saklanır. Tarih ve sayılar seçilen dile
+göre biçimlendirilirken hastane operasyon saatleri `Europe/Istanbul` saat diliminde
+gösterilmeye devam eder.
+
 ## Kurulum
 
 Gereksinim: Node.js 20 veya üzeri.

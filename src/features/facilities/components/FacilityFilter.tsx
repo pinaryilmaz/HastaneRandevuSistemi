@@ -1,4 +1,5 @@
 import { Building2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Select } from '@/components/ui/select';
 import { useFilterStore } from '@/store/filterStore';
 import { useFacilities } from '../hooks/useFacilities';
@@ -12,6 +13,7 @@ export function FacilityFilter({
   onChange?: (id: string) => void;
   className?: string;
 }) {
+  const { t } = useTranslation();
   const globalValue = useFilterStore((state) => state.facilityId);
   const setGlobal = useFilterStore((state) => state.setFacilityId);
   const facilities = useFacilities();
@@ -24,12 +26,12 @@ export function FacilityFilter({
         aria-hidden="true"
       />
       <Select
-        aria-label="Hastane veya şube seç"
+        aria-label={t('facility.select')}
         value={selected}
         onChange={(event) => (onChange ?? setGlobal)(event.target.value)}
         className="w-full pl-9 sm:w-64"
       >
-        <option value="">Tüm hastaneler</option>
+        <option value="">{t('facility.allHospitals')}</option>
         {facilities.data?.map((facility) => (
           <option key={facility.id} value={facility.id}>
             {facility.name}
